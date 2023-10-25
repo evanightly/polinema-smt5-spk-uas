@@ -1,3 +1,0 @@
-class StudyCase {
-	id!: number
-}
