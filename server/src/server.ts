@@ -13,6 +13,7 @@ server.get('/test', async (request, reply) => {
 const SERVER_PORT: number = Number(process.env.PORT || 3000)
 
 server.listen({ port: SERVER_PORT }, (err, address) => {
+	console.log(SERVER_PORT)
 	if (err) {
 		console.error(err)
 		process.exit(1)
