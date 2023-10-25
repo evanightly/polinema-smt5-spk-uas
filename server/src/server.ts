@@ -10,7 +10,7 @@ server.get('/test', async (request, reply) => {
 	return 'Test'
 })
 
-const SERVER_PORT: number = 3000
+const SERVER_PORT: number = Number(process.env.PORT || 3000)
 
 server.listen({ port: SERVER_PORT }, (err, address) => {
 	if (err) {
