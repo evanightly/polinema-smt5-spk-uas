@@ -2,6 +2,10 @@ import fastify from 'fastify'
 
 const server = fastify()
 
+server.get('/', async (request, reply) => {
+	return 'Ok'
+})
+
 server.get('/test', async (request, reply) => {
 	return 'Test'
 })
