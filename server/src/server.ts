@@ -6,7 +6,7 @@ server.get('/test', async (request, reply) => {
 	return 'Test'
 })
 
-const SERVER_PORT: number = 80
+const SERVER_PORT: number = 2500
 
 server.listen({ port: SERVER_PORT }, (err, address) => {
 	if (err) {
