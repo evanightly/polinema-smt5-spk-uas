@@ -1,6 +1,6 @@
 # Proyek SPK Perangkingan dengan Metode TOPSIS
 
-Proyek ini adalah sistem pendukung keputusan (SPK) untuk perangkingan menggunakan metode Technique for Order of Preference by Similarity to Ideal Solution (TOPSIS). Proyek ini dikembangkan menggunakan MongoDB, Fastify, NextJS, dan Node.
+Proyek ini dikembangkan untuk melakukan perangkingan alternatif menggunakan metode Technique for Order of Preference by Similarity to Ideal Solution (TOPSIS). Dikembangkan menggunakan MongoDB, Fastify, NextJS, dan Node.
 
 ## Fitur
 
