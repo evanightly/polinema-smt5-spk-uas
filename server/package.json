@@ -4,11 +4,11 @@
   "description": "",
   "main": "build/server.js",
   "scripts": {
-    "p": "npm install && cd ../client && npm install",
+    "install:all": "npm install && cd ../client && npm install",
     "dev": "concurrently \"npm run dev:server\" \"npm run dev:client\"",
     "dev:server": "npx nodemon",
     "dev:client": "cd ../client && npm run dev",
-    "start": "npm run build && node server.js",
+    "start": "npm run build && node build/server.js",
     "build": "rimraf ./build && tsc",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
