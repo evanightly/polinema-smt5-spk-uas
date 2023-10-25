@@ -12,7 +12,7 @@ server.get('/test', async (request, reply) => {
 	return 'Test'
 })
 
-const SERVER_PORT: number = Number(process.env.PORT) ?? 2121
+const SERVER_PORT: number = Number(process.env.PORT?? 2121) 
 
 server.listen({ port: SERVER_PORT }, (err, address) => {
 	if (err) {
