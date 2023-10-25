@@ -1,9 +1,23 @@
-const express = require('express')
-const app = express()
-app.get('/', (req: any, res: any) => {
-	res.send('Hello World!')
+import fastify from 'fastify'
+
+const server = fastify()
+
+server.register(require('@fastify/cors'))
+
+server.get('/', async (request, reply) => {
+	return 'Ok'
 })
 
-app.listen(7000, () => {
-	console.log(`Example app listening on port 7000`)
+server.get('/test', async (request, reply) => {
+	return 'Test'
+})
+
+const SERVER_PORT: number = Number(process.env.PORT) ?? 2121
+
+server.listen({ port: SERVER_PORT }, (err, address) => {
+	if (err) {
+		console.error(err)
+		process.exit(1)
+	}
+	console.log(`Server listening at ${address}`)
 })
