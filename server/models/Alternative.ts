@@ -4,7 +4,8 @@ import IAlternative from '../../lib/interfaces/IAlternative'
 const AlternativeSchema = new Schema<IAlternative>({
 	id: String,
 	title: String,
-	score: [{ type: Types.ObjectId, ref: 'Criteria' }]
+	studyCase: {type: Types.ObjectId, ref: 'StudyCase'},
+	score: [{ type: Types.ObjectId, ref: 'Score' }]
 })
 
 export default model('Alternative', AlternativeSchema)
