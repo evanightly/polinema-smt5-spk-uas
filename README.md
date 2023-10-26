@@ -2,6 +2,10 @@
 
 Proyek ini dikembangkan untuk melakukan perangkingan alternatif menggunakan metode Technique for Order of Preference by Similarity to Ideal Solution (TOPSIS). Dikembangkan menggunakan MongoDB, Fastify, NextJS, dan Node.
 
+## Critical Feature
+- Database Configuration
+- Mongoose Model Middleware
+
 ## Fitur
 
 - Perangkingan dengan metode TOPSIS.
