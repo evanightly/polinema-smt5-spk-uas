@@ -6,6 +6,9 @@ Proyek ini dikembangkan untuk melakukan perangkingan alternatif menggunakan meto
 - Database Configuration
 - Mongoose Model Middleware
 
+![polinema-smt5-spk-uas](https://github.com/evanightly/polinema-smt5-spk-uas/assets/58504115/c4c213a5-a1aa-415f-b55e-f895bf3b9554)
+
+
 ## Fitur
 
 - Perangkingan dengan metode TOPSIS.
