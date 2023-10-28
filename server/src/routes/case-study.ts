@@ -8,6 +8,7 @@ module.exports = function (fastify: FastifyInstance, opts: any, done: any) {
 
     fastify.get('/:_id', async (req: FastifyRequest, reply: FastifyReply) => {
         const _id = req.params as { _id: string }
+        console.log(_id)
         return await CaseStudy.findById(_id).populate([
             {
                 path: 'alternative',
