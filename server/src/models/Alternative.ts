@@ -1,5 +1,5 @@
 import { model, Schema, Types } from 'mongoose'
-import IAlternative from '../../lib/interfaces/IAlternative'
+import IAlternative from '../../../lib/interfaces/IAlternative'
 
 const AlternativeSchema = new Schema<IAlternative>({
 	id: String,

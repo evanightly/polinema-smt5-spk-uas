@@ -1,60 +1,65 @@
 import Alternative from "../models/Alternative";
+import CaseStudy from "../models/CaseStudy";
 import Criteria from "../models/Criteria";
 import Score from "../models/Score";
-import StudyCase from "../models/StudyCase";
+
+const CASE_STUDY_NAME = 'Jalan Terbaik'
 
 export default async function createSampleData() {
-    const sampleStudyCase = await StudyCase.create({ title: 'Jalan Terbaik' })
+    const isSampleExist = await CaseStudy.findOne({ title: CASE_STUDY_NAME })
+    if (isSampleExist) return 'Already Exist'
+
+    const sampleCaseStudy = await CaseStudy.create({ title: CASE_STUDY_NAME })
 
     const sampleCriteria = await Criteria.create([
         {
             title: 'Lokasi',
-            studyCase: sampleStudyCase,
+            studyCase: sampleCaseStudy,
             type: 'Benefit',
             weight: 5
         },
         {
             title: 'Luas Tanah (m^2)',
-            studyCase: sampleStudyCase,
+            studyCase: sampleCaseStudy,
             type: 'Benefit',
             weight: 4
         },
         {
             title: 'Harga (jt/m)',
-            studyCase: sampleStudyCase,
+            studyCase: sampleCaseStudy,
             type: 'Cost',
             weight: 4
         },
         {
             title: 'Ukuran',
-            studyCase: sampleStudyCase,
+            studyCase: sampleCaseStudy,
             type: 'Benefit',
             weight: 3
         },
         {
             title: 'Resiko',
-            studyCase: sampleStudyCase,
+            studyCase: sampleCaseStudy,
             type: 'Cost',
             weight: 4
         }
     ])
-    
+
     const sampleAlternative = await Alternative.create([
         {
             title: 'Jalan A',
-            studyCase: sampleStudyCase
+            studyCase: sampleCaseStudy
         },
         {
             title: 'Jalan B',
-            studyCase: sampleStudyCase
+            studyCase: sampleCaseStudy
         },
         {
             title: 'Jalan C',
-            studyCase: sampleStudyCase
+            studyCase: sampleCaseStudy
         },
     ])
 
-    const sampleScore = await Score.create([
+    const sampleScoreAlt1 = await Score.create([
         // Row 1
         {
             alternative: sampleAlternative[0],
@@ -81,7 +86,9 @@ export default async function createSampleData() {
             criteria: sampleCriteria[4],
             score: 1
         },
+    ])
 
+    const sampleScoreAlt2 = await Score.create([
         // Row 2
         {
             alternative: sampleAlternative[1],
@@ -108,7 +115,9 @@ export default async function createSampleData() {
             criteria: sampleCriteria[4],
             score: 4
         },
+    ])
 
+    const sampleScoreAlt3 = await Score.create([
         // Row 3
         {
             alternative: sampleAlternative[2],
@@ -136,4 +145,12 @@ export default async function createSampleData() {
             score: 3
         },
     ])
+
+    console.log('CASE STUDY \n' + sampleCaseStudy)
+    await CaseStudy.findByIdAndUpdate(sampleCaseStudy._id, { alternative: sampleAlternative, criteria: sampleCriteria })
+    await Alternative.findByIdAndUpdate(sampleAlternative[0]._id, { score: sampleScoreAlt1 })
+    await Alternative.findByIdAndUpdate(sampleAlternative[1]._id, { score: sampleScoreAlt2 })
+    await Alternative.findByIdAndUpdate(sampleAlternative[2]._id, { score: sampleScoreAlt3 })
+
+    return 'Sample Created'
 }

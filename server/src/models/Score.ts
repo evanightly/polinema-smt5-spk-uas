@@ -1,5 +1,5 @@
 import { model, Schema, Types } from 'mongoose'
-import IScore from '../../lib/interfaces/IScore'
+import IScore from '../../../lib/interfaces/IScore'
 const ScoreSchema = new Schema<IScore>({
 	id: String,
 	alternative: { type: Types.ObjectId, ref: 'Alternative' },
@@ -7,4 +7,4 @@ const ScoreSchema = new Schema<IScore>({
 	score: Number
 })
 
-export default model('Criteria', ScoreSchema)
+export default model('Score', ScoreSchema)

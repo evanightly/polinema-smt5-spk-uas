@@ -4,6 +4,7 @@ export default {
     './src/**/*.{html,js,svelte,ts}',
     'node_modules/preline/dist/*.js',
   ],
+  darkMode: 'class',
   theme: {
     extend: {},
   },

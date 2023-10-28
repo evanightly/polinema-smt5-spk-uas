@@ -1,4 +1,4 @@
-import IStudyCase from './IStudyCase'
+import ICaseStudy from './ICaseStudy'
 
 export enum CriteriaType {
 	Benefit = 'Benefit',
@@ -9,6 +9,6 @@ export default interface ICriteria {
 	id: string
 	title: string
 	weight: number
-	studyCase: IStudyCase
+	studyCase: ICaseStudy
 	type: CriteriaType
 }

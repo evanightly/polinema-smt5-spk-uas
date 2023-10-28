@@ -1,9 +1,9 @@
+import ICaseStudy from './ICaseStudy'
 import ICriteria from './ICriteria'
-import IStudyCase from './IStudyCase'
 
 export default interface IAlternative {
 	id: string
 	title: string
-	studyCase: IStudyCase
+	studyCase: ICaseStudy
 	score: [ICriteria]
 }

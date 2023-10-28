@@ -1,13 +1,12 @@
 import { model, Schema, Types } from 'mongoose'
-import IStudyCase from '../../lib/interfaces/IStudyCase'
+import ICaseStudy from '../../../lib/interfaces/ICaseStudy'
 
-const StudyCaseSchema = new Schema<IStudyCase>({
+const CaseStudySchema = new Schema<ICaseStudy>({
 	id: String,
 	title: String,
 	description: String,
 	alternative: [{ type: Types.ObjectId, ref: 'Alternative' }],
 	criteria: [{ type: Types.ObjectId, ref: 'Criteria' }],
-	createdAt: Date.now()
 })
 
-export default model('StudyCase', StudyCaseSchema)
+export default model('StudyCase', CaseStudySchema)

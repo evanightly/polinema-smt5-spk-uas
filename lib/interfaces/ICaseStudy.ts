@@ -1,7 +1,7 @@
 import IAlternative from './IAlternative'
 import ICriteria from './ICriteria'
 
-export default interface IStudyCase {
+export default interface ICaseStudy {
 	id: string
 	title: string
 	description: string

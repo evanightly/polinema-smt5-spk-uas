@@ -1,5 +1,5 @@
 import { model, Schema, Types } from 'mongoose'
-import ICriteria, { CriteriaType } from '../../lib/interfaces/ICriteria'
+import ICriteria, { CriteriaType } from '../../../lib/interfaces/ICriteria'
 
 const CriteriaSchema = new Schema<ICriteria>({
 	id: String,

@@ -7,7 +7,8 @@
     "install:all": "npm install && cd ../client && npm install",
     "dev": "concurrently \"npm run dev:server\" \"npm run dev:client\"",
     "dev:server": "npx nodemon",
-    "dev:client": "cd ../client && npm run dev -- --open",
+    "dev:client": "cd ../client && npm run dev",
+    "dev:client-open": "cd ../client && npm run dev -- --open",
     "start": "npm run build && node build/server.js",
     "build": "rimraf ./build && tsc",
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -18,6 +19,7 @@
   "dependencies": {
     "@fastify/cors": "^8.4.0",
     "cors": "^2.8.5",
+    "dotenv": "^16.3.1",
     "express": "^4.18.2",
     "fastify": "^4.24.3",
     "mongoose": "^7.6.3"
