@@ -1,10 +1,34 @@
-<script>
-	import { caseStudyList, selectedCaseStudy } from '$lib/stores/caseStudy';
+<script lang="ts">
+	import { caseStudyList, getCaseStudyList, selectedCaseStudy } from '$lib/stores/caseStudy';
 	import { darkMode } from '$lib/stores/darkMode';
 	import jQuery from 'jquery';
 
-	import { Bars3, Moon, Sun } from '@inqling/svelte-icons/heroicon-24-outline';
+	import { baseUrl } from '$lib/stores/baseUrl';
+	import { Bars3, Minus, Moon, Plus, Sun } from '@inqling/svelte-icons/heroicon-24-outline';
+	import axios from 'axios';
 	import { afterUpdate, onMount } from 'svelte';
+
+	let addCaseStudyModal: HTMLDialogElement;
+	let caseStudyTitle: string;
+	let caseStudyDescription: string;
+
+	const toggleAddCaseStudyModal = () => {
+		addCaseStudyModal.showModal();
+	};
+
+	const addCaseStudy = async () => {
+		await axios.post(`${$baseUrl}/case-study`, {
+			title: caseStudyTitle,
+			description: caseStudyDescription
+		});
+		const res = await getCaseStudyList();
+		$selectedCaseStudy = res[res.length - 1];
+	};
+
+	const removeCaseStudy = async () => {
+		await axios.delete(`${$baseUrl}/case-study/${$selectedCaseStudy._id}`);
+		await getCaseStudyList();
+	};
 
 	onMount(() => {
 		if (
@@ -51,6 +75,13 @@
 					{/if}
 				</select>
 			</div>
+
+			<button class="btn btn-circle btn-ghost btn-sm" on:click={toggleAddCaseStudyModal}
+				><Plus class="w-4 h-4" /></button
+			>
+			<button class="btn btn-circle btn-ghost btn-sm" on:click={removeCaseStudy}
+				><Minus class="w-4 h-4" /></button
+			>
 		</div>
 		<label class="swap swap-rotate">
 			<input type="checkbox" bind:checked={$darkMode} />
@@ -59,3 +90,44 @@
 		</label>
 	</div>
 </div>
+
+<dialog bind:this={addCaseStudyModal} id="my_modal_2" class="modal">
+	<div class="modal-box">
+		<form
+			method="post"
+			class="form flex flex-col gap-3 mt-3"
+			on:submit|preventDefault={addCaseStudy}
+		>
+			<div class="flex justify-between">
+				<h3 class="font-bold text-lg">Tambah Studi Kasus</h3>
+				<button type="submit" class="btn btn-sm btn-primary">Submit</button>
+			</div>
+			<div class="form-control">
+				<label for="caseStudyTitle">
+					<span class="label-text">Title</span>
+				</label>
+				<input
+					id="caseStudyTitle"
+					type="text"
+					class="input input-bordered"
+					required
+					bind:value={caseStudyTitle}
+				/>
+			</div>
+			<div class="form-control">
+				<label for="caseStudyDescription">
+					<span class="label-text">Description</span>
+				</label>
+				<textarea
+					id="caseStudyDescription"
+					class="textarea textarea-bordered"
+					placeholder="Description"
+					bind:value={caseStudyDescription}
+				/>
+			</div>
+		</form>
+	</div>
+	<form method="dialog" class="modal-backdrop">
+		<button>close</button>
+	</form>
+</dialog>

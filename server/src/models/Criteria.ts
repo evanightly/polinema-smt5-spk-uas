@@ -1,5 +1,6 @@
-import { model, Schema, Types } from 'mongoose'
+import { model, Query, Schema, Types } from 'mongoose'
 import ICriteria, { CriteriaType } from '../../../lib/interfaces/ICriteria'
+import CaseStudy from './CaseStudy'
 
 const CriteriaSchema = new Schema<ICriteria>({
 	id: String,
@@ -10,6 +11,11 @@ const CriteriaSchema = new Schema<ICriteria>({
 		enum: CriteriaType,
 	},
 	studyCase: { type: Types.ObjectId, ref: 'StudyCase' }
+})
+
+CriteriaSchema.post<Query<ICriteria, ICriteria>>('save', async function (doc) {
+	const caseStudy_id = (await doc).studyCase
+	await CaseStudy.findOneAndUpdate({ _id: caseStudy_id }, { $addToSet: { criteria: doc } })
 })
 
 export default model('Criteria', CriteriaSchema)

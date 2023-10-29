@@ -3,6 +3,9 @@
 	import { activeCaseStudy, refreshData } from '$lib/stores/caseStudy';
 	import axios from 'axios';
 	import Swal from 'sweetalert2';
+
+	const maxCriteria = $activeCaseStudy.criteria.length;
+	let parsedInput = 0;
 	const changeAlternative = async (e: any) => {
 		const _id = e.target.getAttribute('data-id');
 		const { value } = e.target;
@@ -38,6 +41,8 @@
 			timer: 3000
 		});
 	};
+
+	const assignNewScore = async (e: any) => {};
 </script>
 
 <svelte:head>
@@ -63,7 +68,7 @@
 			</thead>
 			<tbody>
 				{#if $activeCaseStudy && $activeCaseStudy.alternative.length}
-					{#each $activeCaseStudy.alternative as alternative, i}
+					{#each $activeCaseStudy.alternative as alternative}
 						<tr>
 							<td class="p-0"
 								><input
@@ -74,7 +79,7 @@
 									on:change={changeAlternative}
 								/></td
 							>
-							{#each alternative.score as score}
+							{#each alternative.score as score, i}
 								<td class="p-0"
 									><input
 										type="number"
@@ -84,7 +89,21 @@
 										on:change={changeScore}
 									/></td
 								>
+
+								{parsedInput++}
 							{/each}
+
+							{#if parsedInput < $activeCaseStudy.criteria.length}
+								{#each Array($activeCaseStudy.criteria.length) as _, ci}
+									<td class="p-0"
+										><input
+											type="number"
+											class="h-full w-full p-3"
+											on:change={assignNewScore}
+										/></td
+									>
+								{/each}
+							{/if}
 						</tr>
 					{/each}
 				{/if}

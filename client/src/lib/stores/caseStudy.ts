@@ -22,7 +22,7 @@ selectedCaseStudy.subscribe(async (caseStudy) => {
 export const getCaseStudyList = async () => {
 	const response = await fetch(`${api}/case-study/`).then(res => res.json()).catch(err => console.log(err))
 	caseStudyList.set(response)
-	console.log('get')
+	return response
 };
 
 export const getCaseStudy = async (_id: string) => {

@@ -1,7 +1,25 @@
 <script lang="ts">
-	import { activeCaseStudy } from '$lib/stores/caseStudy';
+	import { baseUrl } from '$lib/stores/baseUrl';
+	import { activeCaseStudy, refreshData } from '$lib/stores/caseStudy';
+	import axios from 'axios';
+	import type { CriteriaType } from '../../../../lib/interfaces/ICriteria';
 	let addModal: HTMLDialogElement;
+
+	let criteriaTitle: String;
+	let criteriaWeight: Number;
+	let criteriaType: CriteriaType;
+
 	const showModal = () => addModal.showModal();
+	const addCriteria = async () => {
+		await axios.post(`${$baseUrl}/criteria`, {
+			caseStudy_id: $activeCaseStudy._id,
+			title: criteriaTitle,
+			weight: criteriaWeight,
+			type: criteriaType
+		});
+
+		await refreshData();
+	};
 </script>
 
 <svelte:head>
@@ -12,10 +30,9 @@
 	<h1 class="text-2xl font-bold sm:text-3xl">Data Kriteria</h1>
 	<button class="btn btn-md" on:click={showModal}>Tambah Kriteria</button>
 
-	<!-- Open the modal using ID.showModal() method -->
 	<dialog id="my_modal_2" class="modal" bind:this={addModal}>
 		<div class="modal-box">
-			<form action="" class="flex flex-col gap-2 items-start">
+			<form class="flex flex-col gap-2 items-start" on:submit|preventDefault={addCriteria}>
 				<div class="flex justify-between w-full">
 					<h3 class="font-bold text-lg">Tambah Kriteria</h3>
 					<button type="submit" class="btn btn-primary btn-sm">Submit</button>
@@ -26,9 +43,10 @@
 					</label>
 					<input
 						id="criteria_title"
-						name="criteria_title"
+						bind:value={criteriaTitle}
 						type="text"
 						class="input input-bordered w-full"
+						required
 					/>
 				</div>
 
@@ -39,9 +57,10 @@
 						</label>
 						<input
 							id="criteria_weight"
-							name="criteria_weight"
+							bind:value={criteriaWeight}
 							type="text"
 							class="input input-bordered w-full"
+							required
 						/>
 					</div>
 
@@ -49,7 +68,13 @@
 						<label for="criteria_type">
 							<span class="label-text">Tipe</span>
 						</label>
-						<select name="criteria_type" id="criteria_type" class="select select-bordered">
+						<select
+							name="criteria_type"
+							id="criteria_type"
+							bind:value={criteriaType}
+							class="select select-bordered"
+							required
+						>
 							<option value="Benefit">Benefit</option>
 							<option value="Cost">Cost</option>
 						</select>

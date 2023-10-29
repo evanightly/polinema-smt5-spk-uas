@@ -146,7 +146,7 @@ export default async function createSampleData() {
         },
     ])
 
-    console.log('CASE STUDY \n' + sampleCaseStudy)
+    // console.log('CASE STUDY \n' + sampleCaseStudy)
     await CaseStudy.findByIdAndUpdate(sampleCaseStudy._id, { alternative: sampleAlternative, criteria: sampleCriteria })
     await Alternative.findByIdAndUpdate(sampleAlternative[0]._id, { score: sampleScoreAlt1 })
     await Alternative.findByIdAndUpdate(sampleAlternative[1]._id, { score: sampleScoreAlt2 })
