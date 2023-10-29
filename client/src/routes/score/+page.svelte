@@ -68,7 +68,7 @@
 			</thead>
 			<tbody>
 				{#if $activeCaseStudy && $activeCaseStudy.alternative.length}
-					{#each $activeCaseStudy.alternative as alternative}
+					{#each $activeCaseStudy.alternative as alternative, altIndex}
 						<tr>
 							<td class="p-0"
 								><input
@@ -79,31 +79,17 @@
 									on:change={changeAlternative}
 								/></td
 							>
-							{#each alternative.score as score, i}
+							{#each $activeCaseStudy.criteria as criteria, criteriaIndex}
 								<td class="p-0"
 									><input
 										type="number"
-										data-id={score._id}
-										value={score.score}
+										data-id={alternative.score[criteriaIndex]?._id ?? 0}
+										value={alternative.score[criteriaIndex]?.score ?? 0}
 										class="h-full w-full p-3"
 										on:change={changeScore}
 									/></td
 								>
-
-								{parsedInput++}
 							{/each}
-
-							{#if parsedInput < $activeCaseStudy.criteria.length}
-								{#each Array($activeCaseStudy.criteria.length) as _, ci}
-									<td class="p-0"
-										><input
-											type="number"
-											class="h-full w-full p-3"
-											on:change={assignNewScore}
-										/></td
-									>
-								{/each}
-							{/if}
 						</tr>
 					{/each}
 				{/if}
