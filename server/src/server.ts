@@ -13,6 +13,9 @@ server.get('/', async (_request, _reply) => {
 })
 
 server.register(require('./routes/case-study'), { prefix: '/case-study' })
+server.register(require('./routes/alternative'), { prefix: '/alternative' })
+server.register(require('./routes/criteria'), { prefix: '/criteria' })
+server.register(require('./routes/score'), { prefix: '/score' })
 
 server.get('/sample', async (_request, _reply) => await createSampleData())
 

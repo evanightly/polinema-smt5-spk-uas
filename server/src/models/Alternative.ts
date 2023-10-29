@@ -4,7 +4,7 @@ import IAlternative from '../../../lib/interfaces/IAlternative'
 const AlternativeSchema = new Schema<IAlternative>({
 	id: String,
 	title: String,
-	studyCase: {type: Types.ObjectId, ref: 'StudyCase'},
+	studyCase: { type: Types.ObjectId, ref: 'StudyCase' },
 	score: [{ type: Types.ObjectId, ref: 'Score' }]
 })
 

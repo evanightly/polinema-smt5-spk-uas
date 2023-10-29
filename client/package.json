@@ -37,7 +37,10 @@
 	"type": "module",
 	"dependencies": {
 		"@inqling/svelte-icons": "^4.0.2",
+		"array-pivot": "^1.0.1",
+		"axios": "^1.6.0",
 		"jquery": "^3.7.1",
-		"preline": "^1.9.0"
+		"preline": "^1.9.0",
+		"sweetalert2": "^11.8.0"
 	}
 }

@@ -6,6 +6,7 @@ export enum CriteriaType {
 }
 
 export default interface ICriteria {
+	_id: string
 	id: string
 	title: string
 	weight: number
