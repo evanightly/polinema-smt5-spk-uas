@@ -1,24 +1,23 @@
 <script>
-	import { activeCaseStudy } from '../lib/components/stores/caseStudy';
+	import { activeCaseStudy } from '../lib/stores/caseStudy';
 </script>
 
 <svelte:head>
 	<title>DSS Dashboard</title>
 </svelte:head>
 
-<!-- <div class="w-full pt-10 px-4 sm:px-6 md:px-8 lg:pl-72"> -->
 <header>
 	<p class="mb-2 text-sm font-semibold text-blue-600">Decision Support System</p>
 	{#if $activeCaseStudy && $activeCaseStudy.title}
-		<h1 class="text-2xl font-bold text-gray-800 sm:text-3xl dark:text-white">
+		<h1 class="text-2xl font-bold">
 			{$activeCaseStudy.title}
 		</h1>
-		<p class="mt-2 text-lg text-gray-800 dark:text-gray-400">
+		<p class="mt-2 text-lg">
 			Isilah data alternatif, kriteria, dan scoring untuk mendapatkan hasil akhir
 		</p>
 	{:else}
-		<h1 class="text-2xl font-bold text-gray-800 sm:text-3xl dark:text-white">Prasyarat</h1>
-		<p class="mt-2 text-lg text-gray-800 dark:text-gray-400">Buat studi kasus baru</p>
+		<h1 class="text-2xl font-bold">Prasyarat</h1>
+		<p class="mt-2 text-lg">Buat studi kasus baru</p>
 	{/if}
 
 	<div class="mt-5 flex flex-col items-center gap-2 sm:flex-row sm:gap-3">
@@ -43,4 +42,3 @@
 		</a>
 	</div>
 </header>
-<!-- </div> -->

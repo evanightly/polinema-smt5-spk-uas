@@ -1,48 +1,57 @@
-<script>
-	import { activeCaseStudy } from '../../lib/components/stores/caseStudy';
+<script lang="ts">
+	import { activeCaseStudy } from '$lib/stores/caseStudy';
+	let addModal: HTMLDialogElement;
+	const showModal = () => addModal.showModal();
 </script>
 
 <svelte:head>
 	<title>DSS Alternative</title>
 </svelte:head>
 
-<h1 class="text-2xl font-bold text-gray-800 sm:text-3xl dark:text-white">Data Alternatif</h1>
-<div class="flex flex-col gap-2 mt-5" />
+<div class="flex items-center gap-5">
+	<h1 class="text-2xl font-bold sm:text-3xl">Data Alternatif</h1>
+	<button class="btn btn-md" on:click={showModal}>Tambah Alternatif</button>
 
-<div class="flex flex-col">
-	<div class="-m-1.5 overflow-x-auto">
-		<div class="p-1.5 min-w-full inline-block align-middle">
-			<div class="overflow-hidden">
-				<table class="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
-					<thead>
-						<tr>
-							<th
-								scope="col"
-								class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">#</th
-							>
-							<th
-								scope="col"
-								class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Title</th
-							>
-						</tr>
-					</thead>
-					<tbody class="divide-y divide-gray-200 dark:divide-gray-700">
-						{#if $activeCaseStudy && $activeCaseStudy.alternative.length}
-							{#each $activeCaseStudy.alternative as alternative, i}
-								<tr>
-									<td
-										class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-800 dark:text-gray-200"
-										>{i + 1}</td
-									>
-									<td class="px-6 py-4 whitespace-nowrap text-sm text-gray-800 dark:text-gray-200"
-										>{alternative.title}</td
-									>
-								</tr>
-							{/each}
-						{/if}
-					</tbody>
-				</table>
-			</div>
+	<!-- Open the modal using ID.showModal() method -->
+	<dialog id="my_modal_2" class="modal" bind:this={addModal}>
+		<div class="modal-box">
+			<form action="" class="flex flex-col gap-5 items-start">
+				<div class="flex justify-between w-full">
+					<h3 class="font-bold text-lg">Tambah Alternatif</h3>
+					<button type="submit" class="btn btn-primary btn-sm">Submit</button>
+				</div>
+				<input
+					id="alternative_title"
+					name="alternative_title"
+					type="text"
+					class="input input-bordered w-full"
+				/>
+			</form>
 		</div>
+		<form method="dialog" class="modal-backdrop">
+			<button>close</button>
+		</form>
+	</dialog>
+</div>
+<div class="flex flex-col mt-5">
+	<div class="overflow-x-auto">
+		<table class="table">
+			<thead>
+				<tr>
+					<th>#</th>
+					<th>Title</th>
+				</tr>
+			</thead>
+			<tbody>
+				{#if $activeCaseStudy && $activeCaseStudy.alternative.length}
+					{#each $activeCaseStudy.alternative as alternative, i}
+						<tr>
+							<td>{i + 1}</td>
+							<td>{alternative.title}</td>
+						</tr>
+					{/each}
+				{/if}
+			</tbody>
+		</table>
 	</div>
 </div>

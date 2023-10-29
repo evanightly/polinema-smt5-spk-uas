@@ -10,4 +10,8 @@
     .navbar {
         @apply border-b border-b-gray-700 dark:bg-gray-800
     } */
+
+    /* .drawer-side li a{
+        @apply hover:bg-gray-950 hover:text-white
+    } */
 }
