@@ -1,7 +1,6 @@
 import dotenv from 'dotenv'
 import mongoose from "mongoose"
 import createSampleData from './functions/createSampleData'
-import purge from './functions/purge'
 dotenv.config()
 
 const fastify = require('fastify')
@@ -18,11 +17,6 @@ server.register(require('./routes/criteria'), { prefix: '/criteria' })
 server.register(require('./routes/score'), { prefix: '/score' })
 
 server.get('/sample', async (_request, _reply) => await createSampleData())
-
-server.get('/purge', async (_request, _reply) => {
-	await purge()
-	return 'Resetted'
-})
 
 mongoose
 	.connect(process.env.MONGODB_URI!)

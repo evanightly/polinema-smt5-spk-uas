@@ -3,7 +3,7 @@
 	import { activeCaseStudy } from '$lib/stores/caseStudy';
 	let finalResult: IFinalResult[];
 	let finalResultScoreName: string;
-	let showDetails: boolean = true;
+	let showDetails: boolean = false;
 
 	function pivot(data: any) {
 		var iter = function (pivoted: any, record: any) {

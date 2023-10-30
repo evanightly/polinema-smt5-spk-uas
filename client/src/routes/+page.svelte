@@ -10,7 +10,6 @@
 			showConfirmButton: false,
 			html: '<span class="loading loading-spinner loading-lg"></span>'
 		});
-		await axios.get($baseUrl + '/purge');
 		await axios.get($baseUrl + '/sample');
 		await getCaseStudyList();
 		Swal.close();

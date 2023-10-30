@@ -25,7 +25,11 @@ module.exports = function (fastify: FastifyInstance, opts: any, done: any) {
                 model: 'Alternative',
                 populate: {
                     path: 'score',
-                    model: 'Score'
+                    model: 'Score',
+                    populate: {
+                        path: 'criteria',
+                        model: 'Criteria'
+                    }
                 },
             },
             {

@@ -7,7 +7,9 @@ const CASE_STUDY_NAME = 'Jalan Terbaik'
 
 export default async function createSampleData() {
     const isSampleExist = await CaseStudy.findOne({ title: CASE_STUDY_NAME })
-    if (isSampleExist) return 'Already Exist'
+    if (isSampleExist) {
+        await CaseStudy.findOneAndDelete({ title: CASE_STUDY_NAME })
+    }
 
     const sampleCaseStudy = await CaseStudy.create({ title: CASE_STUDY_NAME })
 

@@ -54,7 +54,7 @@
 			<thead>
 				<tr>
 					<th>#</th>
-					<th>Title</th>
+					<th>Nama</th>
 				</tr>
 			</thead>
 			<tbody>
