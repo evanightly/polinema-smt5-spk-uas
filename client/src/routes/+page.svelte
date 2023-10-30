@@ -37,7 +37,7 @@
 	<div class="mt-5 flex flex-col items-center gap-2 sm:flex-row sm:gap-3">
 		<button
 			class="btn w-fit btn-ghost bg-blue-500 text-white hover:bg-blue-600 btn-md"
-			on:click|preventDefault={useSampleData}>Sample Data</button
+			on:click|preventDefault={useSampleData}>Gunakan Sample Data</button
 		>
 	</div>
 </header>

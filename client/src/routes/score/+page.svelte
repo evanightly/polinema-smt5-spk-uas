@@ -1,10 +1,15 @@
 <script lang="ts">
+	import redirectIfNoCaseSelected from '$lib/functions/redirectIfNoCaseSelected';
 	import { baseUrl } from '$lib/stores/baseUrl';
 	import { activeCaseStudy, refreshData } from '$lib/stores/caseStudy';
 	import axios from 'axios';
+	import { onMount } from 'svelte';
 	import Swal from 'sweetalert2';
 
-	console.log($activeCaseStudy);
+	onMount(() => {
+		redirectIfNoCaseSelected();
+	});
+
 	const changeAlternative = async (e: any) => {
 		const _id = e.target.getAttribute('data-id');
 		const { value } = e.target;
@@ -45,7 +50,7 @@
 	const assignNewScore = async (e: any) => {
 		const row = e.target.parentElement.parentElement.rowIndex - 1;
 		const cell = e.target.parentElement.cellIndex - 1;
-		const score = parseInt(e.target.value);
+		const score = e.target.value;
 
 		const criteria = $activeCaseStudy.criteria[cell];
 		const alternative = $activeCaseStudy.alternative[row];
@@ -98,6 +103,7 @@
 									value={alternative.title}
 									data-id={alternative._id}
 									class="h-full w-full p-3"
+									step=".01"
 									on:change={changeAlternative}
 								/></td
 							>
@@ -113,6 +119,7 @@
 											data-id={alternative.score[criteriaIndex]._id}
 											value={alternative.score[criteriaIndex].score}
 											class="h-full w-full p-3"
+											step=".01"
 											on:change={changeScore}
 										/></td
 									>

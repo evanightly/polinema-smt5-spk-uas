@@ -4,7 +4,6 @@
 	import { onMount } from 'svelte';
 	import '../app.css';
 	import { getCaseStudyList } from '../lib/stores/caseStudy';
-
 	onMount(async () => {
 		await getCaseStudyList();
 	});

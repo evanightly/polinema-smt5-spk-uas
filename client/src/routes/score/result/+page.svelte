@@ -1,12 +1,18 @@
 <script lang="ts">
+	import redirectIfNoCaseSelected from '$lib/functions/redirectIfNoCaseSelected';
 	import Topsis from '$lib/methods/topsis.svelte';
 	import { activeCaseStudy } from '$lib/stores/caseStudy';
+	import { onMount } from 'svelte';
 	let calculationType: string;
 
 	$: if (calculationType === 'Topsis') {
 	}
 
 	const methods = ['Topsis'];
+
+	onMount(() => {
+		redirectIfNoCaseSelected();
+	});
 </script>
 
 <svelte:head>

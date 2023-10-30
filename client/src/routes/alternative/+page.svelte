@@ -1,9 +1,16 @@
 <script lang="ts">
+	import redirectIfNoCaseSelected from '$lib/functions/redirectIfNoCaseSelected';
 	import { baseUrl } from '$lib/stores/baseUrl';
 	import { activeCaseStudy, refreshData } from '$lib/stores/caseStudy';
 	import axios from 'axios';
+	import { onMount } from 'svelte';
 	let addModal: HTMLDialogElement;
 	let alternativeTitle: string;
+
+	onMount(() => {
+		redirectIfNoCaseSelected();
+	});
+	
 	const showModal = () => addModal.showModal();
 
 	const addAlternative = async () => {

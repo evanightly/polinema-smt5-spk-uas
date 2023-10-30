@@ -5,6 +5,8 @@
 	import axios from 'axios';
 	import type { CriteriaType } from '../../../../lib/interfaces/ICriteria';
 	import type ICriteria from '../../../../lib/interfaces/ICriteria';
+	import { onMount } from 'svelte';
+	import redirectIfNoCaseSelected from '$lib/functions/redirectIfNoCaseSelected';
 	let addModal: HTMLDialogElement;
 	let editModal: HTMLDialogElement;
 
@@ -15,6 +17,10 @@
 	let editCriteriaTitle: String;
 	let editCriteriaWeight: Number;
 	let editCriteriaType: CriteriaType;
+
+	onMount(() => {
+		redirectIfNoCaseSelected();
+	});
 
 	const showModal = () => addModal.showModal();
 	const addCriteria = async () => {
@@ -177,6 +183,7 @@
 						bind:value={editCriteriaWeight}
 						type="number"
 						class="input input-bordered w-full"
+						step=".01"
 						required
 					/>
 				</div>

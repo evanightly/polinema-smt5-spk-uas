@@ -54,7 +54,7 @@
 
 <div class="navbar border-b border-b-base-300 px-2 md:px-8 lg:px-10">
 	<div class="flex flex-1 justify-between">
-		<div class="flex-none sm:hidden">
+		<div class="flex-none md:hidden">
 			<label for="dashboard-sidebar" class="drawer-button btn btn-square btn-ghost">
 				<Bars3 class="w-5 h-5" />
 			</label>
