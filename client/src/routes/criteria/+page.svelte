@@ -1,13 +1,20 @@
 <script lang="ts">
 	import { baseUrl } from '$lib/stores/baseUrl';
 	import { activeCaseStudy, refreshData } from '$lib/stores/caseStudy';
+	import { Pencil } from '@inqling/svelte-icons/heroicon-24-outline';
 	import axios from 'axios';
 	import type { CriteriaType } from '../../../../lib/interfaces/ICriteria';
+	import type ICriteria from '../../../../lib/interfaces/ICriteria';
 	let addModal: HTMLDialogElement;
+	let editModal: HTMLDialogElement;
 
 	let criteriaTitle: String;
 	let criteriaWeight: Number;
 	let criteriaType: CriteriaType;
+	let editCriteriaId: String;
+	let editCriteriaTitle: String;
+	let editCriteriaWeight: Number;
+	let editCriteriaType: CriteriaType;
 
 	const showModal = () => addModal.showModal();
 	const addCriteria = async () => {
@@ -16,6 +23,25 @@
 			title: criteriaTitle,
 			weight: criteriaWeight,
 			type: criteriaType
+		});
+
+		await refreshData();
+	};
+
+	const showEditModal = (criteria: ICriteria) => {
+		editCriteriaId = criteria._id;
+		editCriteriaTitle = criteria.title;
+		editCriteriaWeight = criteria.weight;
+		editCriteriaType = criteria.type;
+		editModal.showModal();
+	};
+
+	const updateCriteria = async () => {
+		console.log('update');
+		await axios.put(`${$baseUrl}/criteria/${editCriteriaId}`, {
+			title: editCriteriaTitle,
+			weight: editCriteriaWeight,
+			type: editCriteriaType
 		});
 
 		await refreshData();
@@ -30,7 +56,7 @@
 	<h1 class="text-2xl font-bold sm:text-3xl">Data Kriteria</h1>
 	<button class="btn btn-md" on:click={showModal}>Tambah Kriteria</button>
 
-	<dialog id="my_modal_2" class="modal" bind:this={addModal}>
+	<dialog class="modal" bind:this={addModal}>
 		<div class="modal-box">
 			<form class="flex flex-col gap-2 items-start" on:submit|preventDefault={addCriteria}>
 				<div class="flex justify-between w-full">
@@ -96,6 +122,7 @@
 					<th>Nama</th>
 					<th>Bobot</th>
 					<th>Tipe</th>
+					<th />
 				</tr>
 			</thead>
 			<tbody>
@@ -106,6 +133,12 @@
 							<td>{criteria.title}</td>
 							<td>{criteria.weight}</td>
 							<td>{criteria.type}</td>
+							<td
+								><button
+									class="btn btn-sm btn-ghost bg-blue-500 text-white"
+									on:click={() => showEditModal(criteria)}><Pencil class="w-4 h-4" /></button
+								></td
+							>
 						</tr>
 					{/each}
 				{/if}
@@ -113,3 +146,60 @@
 		</table>
 	</div>
 </div>
+
+<dialog class="modal" bind:this={editModal}>
+	<div class="modal-box">
+		<form class="flex flex-col gap-2 items-start" on:submit|preventDefault={updateCriteria}>
+			<div class="flex justify-between w-full">
+				<h3 class="font-bold text-lg">Edit Kriteria {editCriteriaTitle}</h3>
+				<button type="submit" class="btn btn-primary btn-sm">Update</button>
+			</div>
+			<div class="form-control w-full">
+				<label for="edit_criteria_title">
+					<span class="label-text">Nama</span>
+				</label>
+				<input
+					id="edit_criteria_title"
+					bind:value={editCriteriaTitle}
+					type="text"
+					class="input input-bordered w-full"
+					required
+				/>
+			</div>
+
+			<div class="flex w-full gap-5">
+				<div class="form-control w-full">
+					<label for="edit_criteria_weight">
+						<span class="label-text">Bobot</span>
+					</label>
+					<input
+						id="edit_criteria_weight"
+						bind:value={editCriteriaWeight}
+						type="number"
+						class="input input-bordered w-full"
+						required
+					/>
+				</div>
+
+				<div class="form-control w-full">
+					<label for="edit_criteria_type">
+						<span class="label-text">Tipe</span>
+					</label>
+					<select
+						name="edit_criteria_type"
+						id="edit_criteria_type"
+						bind:value={editCriteriaType}
+						class="select select-bordered"
+						required
+					>
+						<option value="Benefit">Benefit</option>
+						<option value="Cost">Cost</option>
+					</select>
+				</div>
+			</div>
+		</form>
+	</div>
+	<form method="dialog" class="modal-backdrop">
+		<button>close</button>
+	</form>
+</dialog>

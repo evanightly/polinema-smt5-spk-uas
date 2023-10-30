@@ -1,5 +1,5 @@
 import { FastifyInstance, FastifyReply, FastifyRequest } from "fastify"
-import { CriteriaType } from "../../../lib/interfaces/ICriteria"
+import ICriteria, { CriteriaType } from "../../../lib/interfaces/ICriteria"
 import Criteria from "../models/Criteria"
 
 module.exports = function (fastify: FastifyInstance, opts: any, done: any) {
@@ -7,6 +7,13 @@ module.exports = function (fastify: FastifyInstance, opts: any, done: any) {
     fastify.post('/', async (req: FastifyRequest, reply: FastifyReply) => {
         const { caseStudy_id, title, weight, type } = req.body as { caseStudy_id: string, title: string, weight: number, type: CriteriaType }
         return await Criteria.create({ studyCase: caseStudy_id, title, weight, type })
+    })
+
+    fastify.put('/:_id', async (req: FastifyRequest, reply: FastifyReply) => {
+        const _id = req.params as { _id: string }
+        const { title, weight, type } = req.body as ICriteria
+        console.log(req.body)
+        return await Criteria.findByIdAndUpdate(_id, { title, weight, type })
     })
 
     fastify.patch('/:_id', async (req: FastifyRequest, reply: FastifyReply) => {
