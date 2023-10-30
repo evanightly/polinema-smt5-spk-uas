@@ -12,7 +12,6 @@ module.exports = function (fastify: FastifyInstance, opts: any, done: any) {
     fastify.put('/:_id', async (req: FastifyRequest, reply: FastifyReply) => {
         const _id = req.params as { _id: string }
         const { title, weight, type } = req.body as ICriteria
-        console.log(req.body)
         return await Criteria.findByIdAndUpdate(_id, { title, weight, type })
     })
 

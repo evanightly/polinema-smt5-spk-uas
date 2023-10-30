@@ -1,8 +1,8 @@
 <script>
-	import axios from 'axios';
-	import { activeCaseStudy, getCaseStudyList, refreshData } from '../lib/stores/caseStudy';
 	import { baseUrl } from '$lib/stores/baseUrl';
+	import axios from 'axios';
 	import Swal from 'sweetalert2';
+	import { activeCaseStudy, getCaseStudyList } from '../lib/stores/caseStudy';
 	const useSampleData = async () => {
 		Swal.fire({
 			title: 'Please Wait',
@@ -37,7 +37,7 @@
 	<div class="mt-5 flex flex-col items-center gap-2 sm:flex-row sm:gap-3">
 		<button
 			class="btn w-fit btn-ghost bg-blue-500 text-white hover:bg-blue-600 btn-md"
-			on:click|preventDefault={useSampleData}>Gunakan Sample Data</button
+			on:click|preventDefault={useSampleData}>Sample Data</button
 		>
 	</div>
 </header>
