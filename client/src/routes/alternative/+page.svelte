@@ -111,7 +111,7 @@
 								<button class="btn btn-sm btn-blue" on:click={() => showEditModal(alternative)}>
 									<Pencil class="w-4 h-4" />
 								</button>
-								<button class="btn btn-sm btn-red" on:click={() => showDeleteModal(alternative)}>
+								<button disabled={$activeCaseStudy.criteria.length > 0} class="btn btn-sm btn-red" on:click={() => showDeleteModal(alternative)}>
 									<Trash class="w-4 h-4" />
 								</button>
 							</td>

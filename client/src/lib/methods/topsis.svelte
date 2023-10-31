@@ -165,6 +165,10 @@
 	applyingFinalResult(ranks);
 </script>
 
+<svelte:head>
+	<title>DSS Result - Topsis</title>
+</svelte:head>
+
 <div class="flex flex-col gap-5 mt-5">
 	{#if finalResult && finalResultScoreName}
 		<table class="table">

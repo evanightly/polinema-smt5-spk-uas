@@ -11,6 +11,7 @@
 	import type { CriteriaType } from '../../../../lib/interfaces/ICriteria';
 	let addModal: HTMLDialogElement;
 	let editModal: HTMLDialogElement;
+	$: disableDeleteData = $activeCaseStudy.alternative.some((v) => v.score.length);
 
 	let criteriaTitle: String;
 	let criteriaWeight: Number;
@@ -160,7 +161,11 @@
 								<button class="btn btn-sm btn-blue" on:click={() => showEditModal(criteria)}>
 									<Pencil class="w-4 h-4" />
 								</button>
-								<button class="btn btn-sm btn-red" on:click={() => showDeleteModal(criteria)}>
+								<button
+									class="btn btn-sm btn-red"
+									disabled={disableDeleteData}
+									on:click={() => showDeleteModal(criteria)}
+								>
 									<Trash class="w-4 h-4" />
 								</button>
 							</td>

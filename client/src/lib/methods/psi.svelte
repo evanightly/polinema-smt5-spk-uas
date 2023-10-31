@@ -104,7 +104,7 @@
 	const applyingFinalResult = (ranks: any[]) => {
 		// Mapping
 		const scoreName = 'Total PSI';
-		console.log(ranks)
+		console.log(ranks);
 		finalResult = ranks.map((result, rank) => ({
 			altName: result.title,
 			score: result.sum,
@@ -131,6 +131,10 @@
 
 	applyingFinalResult(ranks);
 </script>
+
+<svelte:head>
+	<title>DSS Result - PSI</title>
+</svelte:head>
 
 <div class="flex flex-col gap-5 mt-5">
 	{#if finalResult && finalResultScoreName}
