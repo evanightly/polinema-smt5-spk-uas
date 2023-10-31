@@ -36,6 +36,7 @@
 	"dependencies": {
 		"@inqling/svelte-icons": "^4.0.2",
 		"axios": "^1.6.0",
+		"exceljs": "^4.4.0",
 		"jquery": "^3.7.1",
 		"sweetalert2": "^11.8.0"
 	}

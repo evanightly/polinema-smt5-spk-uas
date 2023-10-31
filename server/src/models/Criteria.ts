@@ -18,4 +18,10 @@ CriteriaSchema.post<Query<ICriteria, ICriteria>>('save', async function (doc) {
 	await CaseStudy.findOneAndUpdate({ _id: caseStudy_id }, { $addToSet: { criteria: doc } })
 })
 
+CriteriaSchema.post<Query<ICriteria, ICriteria>>('findOneAndDelete', async function (doc) {
+	const caseStudyId = doc.studyCase
+	const criteriaId = doc._id
+	await CaseStudy.findByIdAndUpdate(caseStudyId, { $pull: { alternative: criteriaId } })
+})
+
 export default model('Criteria', CriteriaSchema)

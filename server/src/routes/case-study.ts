@@ -2,17 +2,6 @@ import { FastifyInstance, FastifyReply, FastifyRequest } from "fastify"
 import CaseStudy from "../models/CaseStudy"
 
 module.exports = function (fastify: FastifyInstance, opts: any, done: any) {
-    fastify.post('/', async (req: FastifyRequest, reply: FastifyReply) => {
-        console.log('creating case study')
-        const { title, description } = req.body as { title: string, description: string }
-        return await CaseStudy.create({ title, description })
-    })
-
-    fastify.delete('/:_id', async (req: FastifyRequest, reply: FastifyReply) => {
-        const _id = req.params as { _id: string }
-        return await CaseStudy.findOneAndDelete({ _id })
-    })
-
     fastify.get('/', async (req: FastifyRequest, reply: FastifyReply) => {
         return await CaseStudy.find({}, { title: 1 })
     })
@@ -37,6 +26,23 @@ module.exports = function (fastify: FastifyInstance, opts: any, done: any) {
                 model: 'Criteria'
             },
         ])
+    })
+
+    fastify.post('/', async (req: FastifyRequest, reply: FastifyReply) => {
+        const { title, description } = req.body as { title: string, description: string }
+        return await CaseStudy.create({ title, description })
+    })
+
+    fastify.put('/:_id', async (req: FastifyRequest, reply: FastifyReply) => {
+        const _id = req.params as { _id: string }
+
+        const { title, description } = req.body as { title: string, description: string }
+        return await CaseStudy.findByIdAndUpdate(_id, { title, description })
+    })
+
+    fastify.delete('/:_id', async (req: FastifyRequest, reply: FastifyReply) => {
+        const _id = req.params as { _id: string }
+        return await CaseStudy.findOneAndDelete({ _id })
     })
 
     done()

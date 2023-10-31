@@ -1,7 +1,7 @@
-import Alternative from "../models/Alternative";
-import CaseStudy from "../models/CaseStudy";
-import Criteria from "../models/Criteria";
-import Score from "../models/Score";
+import Alternative from "../../models/Alternative";
+import CaseStudy from "../../models/CaseStudy";
+import Criteria from "../../models/Criteria";
+import Score from "../../models/Score";
 
 const CASE_STUDY_NAME_TOPSIS = 'Jalan Terbaik'
 
@@ -89,8 +89,6 @@ export default async function createTopsisSampleData() {
             score: 1
         },
     ])
-
-    console.log(sampleScoreAlt1)
 
     const sampleScoreAlt2 = await Score.create([
         // Row 2

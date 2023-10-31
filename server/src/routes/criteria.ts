@@ -21,5 +21,10 @@ module.exports = function (fastify: FastifyInstance, opts: any, done: any) {
         return await Criteria.findByIdAndUpdate(_id, { score })
     })
 
+    fastify.delete('/:_id', async (req: FastifyRequest, reply: FastifyReply) => {
+        const _id = req.params as { _id: string }
+        await Criteria.findOneAndDelete({ _id })
+    })
+
     done()
 }

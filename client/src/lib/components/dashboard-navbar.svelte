@@ -1,19 +1,30 @@
 <script lang="ts">
-	import { caseStudyList, getCaseStudyList, selectedCaseStudy } from '$lib/stores/caseStudy';
+	import {
+		activeCaseStudy,
+		caseStudyList,
+		getCaseStudyList,
+		selectedCaseStudy
+	} from '$lib/stores/caseStudy';
 	import { darkMode } from '$lib/stores/darkMode';
 	import jQuery from 'jquery';
 
+	import showToast from '$lib/functions/showToast';
 	import { baseUrl } from '$lib/stores/baseUrl';
-	import { Bars3, Minus, Moon, Plus, Sun } from '@inqling/svelte-icons/heroicon-24-outline';
+	import { Bars3, Minus, Moon, Pencil, Plus, Sun } from '@inqling/svelte-icons/heroicon-24-outline';
 	import axios from 'axios';
 	import { afterUpdate, onMount } from 'svelte';
 
 	let addCaseStudyModal: HTMLDialogElement;
+	let editCaseStudyModal: HTMLDialogElement;
 	let caseStudyTitle: string;
 	let caseStudyDescription: string;
 
 	const toggleAddCaseStudyModal = () => {
 		addCaseStudyModal.showModal();
+	};
+
+	const toggleEditCaseStudyModal = () => {
+		editCaseStudyModal.showModal();
 	};
 
 	const addCaseStudy = async () => {
@@ -23,6 +34,18 @@
 		});
 		const res = await getCaseStudyList();
 		$selectedCaseStudy = res[res.length - 1];
+	};
+
+	const editCaseStudy = async () => {
+		console.log($activeCaseStudy._id);
+		const data = {
+			title: $activeCaseStudy.title,
+			description: $activeCaseStudy.description
+		};
+		await axios.put(`${$baseUrl}/case-study/${$activeCaseStudy._id}`, data);
+		await getCaseStudyList();
+
+		showToast('Studi kasus berhasil diubah');
 	};
 
 	const removeCaseStudy = async () => {
@@ -76,6 +99,9 @@
 				</select>
 			</div>
 
+			<button class="btn btn-circle btn-ghost btn-sm" on:click={toggleEditCaseStudyModal}
+				><Pencil class="w-4 h-4" /></button
+			>
 			<button class="btn btn-circle btn-ghost btn-sm" on:click={toggleAddCaseStudyModal}
 				><Plus class="w-4 h-4" /></button
 			>
@@ -91,7 +117,7 @@
 	</div>
 </div>
 
-<dialog bind:this={addCaseStudyModal} id="my_modal_2" class="modal">
+<dialog bind:this={addCaseStudyModal} class="modal">
 	<div class="modal-box">
 		<form
 			method="post"
@@ -131,3 +157,42 @@
 		<button>close</button>
 	</form>
 </dialog>
+
+{#if $activeCaseStudy}
+	<dialog bind:this={editCaseStudyModal} class="modal">
+		<div class="modal-box">
+			<form class="form flex flex-col gap-3 mt-3" on:submit|preventDefault={editCaseStudy}>
+				<div class="flex justify-between">
+					<h3 class="font-bold text-lg">Ubah Studi Kasus</h3>
+					<button type="submit" class="btn btn-sm btn-primary">Submit</button>
+				</div>
+				<div class="form-control">
+					<label for="editCaseStudyTitle">
+						<span class="label-text">Title</span>
+					</label>
+					<input
+						id="editCaseStudyTitle"
+						type="text"
+						class="input input-bordered"
+						required
+						bind:value={$activeCaseStudy.title}
+					/>
+				</div>
+				<div class="form-control">
+					<label for="editCaseStudyDescription">
+						<span class="label-text">Description</span>
+					</label>
+					<textarea
+						id="editCaseStudyDescription"
+						class="textarea textarea-bordered"
+						placeholder="Description"
+						bind:value={$activeCaseStudy.description}
+					/>
+				</div>
+			</form>
+		</div>
+		<form method="dialog" class="modal-backdrop">
+			<button>close</button>
+		</form>
+	</dialog>
+{/if}

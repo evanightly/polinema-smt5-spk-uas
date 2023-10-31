@@ -1,12 +1,14 @@
 <script lang="ts">
+	import redirectIfNoCaseSelected from '$lib/functions/redirectIfNoCaseSelected';
+	import showConfirmationDialog from '$lib/functions/showConfirmationDialog';
+	import showToast from '$lib/functions/showToast';
 	import { baseUrl } from '$lib/stores/baseUrl';
 	import { activeCaseStudy, refreshData } from '$lib/stores/caseStudy';
-	import { Pencil } from '@inqling/svelte-icons/heroicon-24-outline';
+	import { Pencil, Trash } from '@inqling/svelte-icons/heroicon-24-outline';
 	import axios from 'axios';
-	import type { CriteriaType } from '../../../../lib/interfaces/ICriteria';
-	import type ICriteria from '../../../../lib/interfaces/ICriteria';
 	import { onMount } from 'svelte';
-	import redirectIfNoCaseSelected from '$lib/functions/redirectIfNoCaseSelected';
+	import type ICriteria from '../../../../lib/interfaces/ICriteria';
+	import type { CriteriaType } from '../../../../lib/interfaces/ICriteria';
 	let addModal: HTMLDialogElement;
 	let editModal: HTMLDialogElement;
 
@@ -43,7 +45,6 @@
 	};
 
 	const updateCriteria = async () => {
-		console.log('update');
 		await axios.put(`${$baseUrl}/criteria/${editCriteriaId}`, {
 			title: editCriteriaTitle,
 			weight: editCriteriaWeight,
@@ -51,6 +52,22 @@
 		});
 
 		await refreshData();
+
+		showToast(`Kriteria berhasil diubah`);
+
+		editModal.close();
+	};
+
+	const showDeleteModal = async (criteria: ICriteria) => {
+		const deleteCriteriaId = criteria._id;
+		const isConfirmed = await showConfirmationDialog(
+			`Apakah anda yakin menghapus kriteria ${criteria.title}?`
+		);
+		if (isConfirmed) {
+			await axios.delete($baseUrl + '/criteria/' + deleteCriteriaId);
+			await refreshData();
+			showToast(`Criteria ${criteria.title} berhasil dihapus`);
+		}
 	};
 </script>
 
@@ -139,12 +156,14 @@
 							<td>{criteria.title}</td>
 							<td>{criteria.weight}</td>
 							<td>{criteria.type}</td>
-							<td
-								><button
-									class="btn btn-sm btn-ghost bg-blue-500 text-white"
-									on:click={() => showEditModal(criteria)}><Pencil class="w-4 h-4" /></button
-								></td
-							>
+							<td>
+								<button class="btn btn-sm btn-blue" on:click={() => showEditModal(criteria)}>
+									<Pencil class="w-4 h-4" />
+								</button>
+								<button class="btn btn-sm btn-red" on:click={() => showDeleteModal(criteria)}>
+									<Trash class="w-4 h-4" />
+								</button>
+							</td>
 						</tr>
 					{/each}
 				{/if}

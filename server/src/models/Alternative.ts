@@ -15,6 +15,16 @@ AlternativeSchema.post<Query<IAlternative, IAlternative>>('save', async function
 	await CaseStudy.findOneAndUpdate({ _id: caseStudy_id }, { $addToSet: { alternative: doc } })
 })
 
+AlternativeSchema.post<Query<IAlternative, IAlternative>>('findOneAndDelete', async function (doc) {
+	const scores = doc.score
+	console.log(typeof scores, scores)
+
+	const caseStudyId = doc.studyCase
+	const alternativeId = doc._id
+	await CaseStudy.findByIdAndUpdate(caseStudyId, { $pull: { alternative: alternativeId } })
+	await Score.deleteMany(...scores)
+})
+
 AlternativeSchema.post<Query<IAlternative, IAlternative>>('deleteMany', async function (doc) {
 	const scores = doc.score
 	await Score.deleteMany(scores)

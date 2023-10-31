@@ -1,5 +1,5 @@
-import createPsiSampleData from "./createPsiSampleData"
-import createTopsisSampleData from "./createTopsisSampleData"
+import createPsiSampleData from "./samples/createPsiSampleData"
+import createTopsisSampleData from "./samples/createTopsisSampleData"
 
 export default async function createSampleData() {
     await Promise.all([

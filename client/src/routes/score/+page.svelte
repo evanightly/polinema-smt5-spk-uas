@@ -1,10 +1,10 @@
 <script lang="ts">
 	import redirectIfNoCaseSelected from '$lib/functions/redirectIfNoCaseSelected';
+	import showToast from '$lib/functions/showToast';
 	import { baseUrl } from '$lib/stores/baseUrl';
 	import { activeCaseStudy, refreshData } from '$lib/stores/caseStudy';
 	import axios from 'axios';
 	import { onMount } from 'svelte';
-	import Swal from 'sweetalert2';
 
 	onMount(() => {
 		redirectIfNoCaseSelected();
@@ -20,12 +20,7 @@
 
 		await refreshData();
 
-		Swal.fire({
-			title: 'Nama alternatif berhasil diubah',
-			toast: true,
-			position: 'bottom-right',
-			timer: 3000
-		});
+		showToast('Nama alternatif berhasil diubah');
 	};
 
 	const changeScore = async (e: any) => {
@@ -38,13 +33,7 @@
 
 		await refreshData();
 
-		Swal.fire({
-			title: 'Skor berhasil diubah',
-			toast: true,
-			showConfirmButton: false,
-			position: 'bottom-right',
-			timer: 3000
-		});
+		showToast('Skor berhasil diubah');
 	};
 
 	const assignNewScore = async (e: any) => {
@@ -62,13 +51,9 @@
 		});
 		await refreshData();
 
-		Swal.fire({
-			title: `Skor berhasil ditambah\nCriteria: ${criteria.title}\nAlternative: ${alternative.title}`,
-			toast: true,
-			showConfirmButton: false,
-			position: 'bottom-right',
-			timer: 3000
-		});
+		showToast(
+			`Berhasil ditambah\nSkor: ${score}\nKriteria: ${criteria.title}\nAlternatif: ${alternative.title}`
+		);
 	};
 </script>
 
