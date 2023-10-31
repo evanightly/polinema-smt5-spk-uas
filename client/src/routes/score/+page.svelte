@@ -73,7 +73,7 @@
 					<th>Alternatif</th>
 					{#if $activeCaseStudy && $activeCaseStudy.criteria.length}
 						{#each $activeCaseStudy.criteria as criteria}
-							<th contenteditable="true">{criteria.title}</th>
+							<th>{criteria.title}</th>
 						{/each}
 					{/if}
 				</tr>
