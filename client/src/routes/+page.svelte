@@ -26,9 +26,10 @@
 		importDataModal.showModal();
 	};
 
-	const importData = () => {};
-
-	// $: console.log(typeof file, file);
+	const importData = async () => {
+		console.log(typeof file, file);
+		await axios.post($baseUrl + '/file/import', { file });
+	};
 </script>
 
 <svelte:head>
@@ -57,12 +58,18 @@
 	<div class="mt-5 flex flex-col items-center gap-2 sm:flex-row sm:gap-3">
 		<button
 			class="btn btn-ghost bg-blue-500 text-white hover:bg-blue-600"
-			on:click|preventDefault={useSampleData}>Sample Data</button
+			on:click|preventDefault={useSampleData}
 		>
-		<button
-			class="btn btn-ghost bg-green-500 text-white hover:bg-green-600"
-			on:click={showImportDataModal}>Import Data</button
-		>
+			Sample Data
+		</button>
+		{#if $activeCaseStudy}
+			<button
+				class="btn btn-ghost bg-green-500 text-white hover:bg-green-600"
+				on:click={showImportDataModal}
+			>
+				Import Data
+			</button>
+		{/if}
 	</div>
 </header>
 
@@ -71,6 +78,7 @@
 		<div class="modal-box">
 			<form
 				method="post"
+				enctype="multipart/form-data"
 				class="form flex flex-col gap-3 mt-3"
 				on:submit|preventDefault={importData}
 			>
