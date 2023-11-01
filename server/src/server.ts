@@ -5,7 +5,9 @@ dotenv.config()
 
 const fastify = require('fastify')
 const server = fastify()
+
 server.register(require('@fastify/cors'))
+server.register(require('@fastify/multipart'))
 
 server.get('/', async (_request, _reply) => {
 	return 'Ok'

@@ -11,10 +11,13 @@
 	import type { CriteriaType } from '../../../../lib/interfaces/ICriteria';
 	let addModal: HTMLDialogElement;
 	let editModal: HTMLDialogElement;
-	$: disableDeleteData = $activeCaseStudy.alternative.some((v) => v.score.length);
+	let disableDeleteData: boolean;
+	$: if ($activeCaseStudy) {
+		disableDeleteData = $activeCaseStudy.alternative.some((v) => v.score.length);
+	}
 
 	let criteriaTitle: String;
-	let criteriaWeight: Number;
+	let criteriaWeight: Number = 0;
 	let criteriaType: CriteriaType;
 	let editCriteriaId: String;
 	let editCriteriaTitle: String;
@@ -35,6 +38,9 @@
 		});
 
 		await refreshData();
+
+		criteriaTitle = '';
+		criteriaWeight = 0;
 	};
 
 	const showEditModal = (criteria: ICriteria) => {
@@ -108,7 +114,8 @@
 						<input
 							id="criteria_weight"
 							bind:value={criteriaWeight}
-							type="text"
+							type="number"
+							step=".01"
 							class="input input-bordered w-full"
 							required
 						/>
@@ -161,13 +168,11 @@
 								<button class="btn btn-sm btn-blue" on:click={() => showEditModal(criteria)}>
 									<Pencil class="w-4 h-4" />
 								</button>
-								<button
-									class="btn btn-sm btn-red"
-									disabled={disableDeleteData}
-									on:click={() => showDeleteModal(criteria)}
-								>
-									<Trash class="w-4 h-4" />
-								</button>
+								{#if !disableDeleteData}
+									<button class="btn btn-sm btn-red" on:click={() => showDeleteModal(criteria)}>
+										<Trash class="w-4 h-4" />
+									</button>
+								{/if}
 							</td>
 						</tr>
 					{/each}

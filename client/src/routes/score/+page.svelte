@@ -82,40 +82,36 @@
 				{#if $activeCaseStudy && $activeCaseStudy.alternative.length}
 					{#each $activeCaseStudy.alternative as alternative, alternativeIndex}
 						<tr>
-							<td class="p-0"
-								><input
+							<td class="p-0">
+								<input
 									type="text"
 									value={alternative.title}
 									data-id={alternative._id}
 									class="h-full w-full p-3"
 									step=".01"
 									on:change={changeAlternative}
-								/></td
-							>
+								/>
+							</td>
 							<!-- {console.log(alternative.score)} -->
 							{#each $activeCaseStudy.criteria as criteria, criteriaIndex}
 								<!-- {console.log(criteria._id)} -->
 								<!-- {console.log('Current Alternative Index: ', alternativeIndex)} -->
 								<!-- {console.log('Current Criteria Index: ', criteriaIndex)} -->
 								{#if alternative.score[criteriaIndex] && alternative.score[criteriaIndex].criteria && alternative.score[criteriaIndex].criteria._id === criteria._id}
-									<td class="p-0"
-										><input
+									<td class="p-0">
+										<input
 											type="number"
 											data-id={alternative.score[criteriaIndex]._id}
 											value={alternative.score[criteriaIndex].score}
 											class="h-full w-full p-3"
 											step=".01"
 											on:change={changeScore}
-										/></td
-									>
+										/>
+									</td>
 								{:else}
-									<td class="p-0"
-										><input
-											type="number"
-											class="h-full w-full p-3"
-											on:change={assignNewScore}
-										/></td
-									>
+									<td class="p-0">
+										<input type="number" class="h-full w-full p-3" on:change={assignNewScore} />
+									</td>
 								{/if}
 							{/each}
 						</tr>

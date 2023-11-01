@@ -1,9 +1,12 @@
 <script lang="ts">
 	import { browser } from '$app/environment';
+	import showAlert from '$lib/functions/showAlert';
 	import { baseUrl } from '$lib/stores/baseUrl';
 	import axios from 'axios';
 	import Swal from 'sweetalert2';
-	import { activeCaseStudy, getCaseStudyList } from '../lib/stores/caseStudy';
+	import { activeCaseStudy, getCaseStudyList, refreshData } from '../lib/stores/caseStudy';
+	let importDataModal: HTMLDialogElement;
+	let file: FileList;
 
 	const useSampleData = async () => {
 		Swal.fire({
@@ -19,16 +22,34 @@
 		}
 	};
 
-	let importDataModal: HTMLDialogElement;
-	let file: File;
-
 	const showImportDataModal = () => {
 		importDataModal.showModal();
 	};
 
 	const importData = async () => {
-		console.log(typeof file, file);
-		await axios.post($baseUrl + '/file/import', { file });
+		console.log({ caseStudyId: $activeCaseStudy._id });
+		const { data: response } = await axios.post(
+			$baseUrl + '/file/import',
+			{ file },
+			{
+				params: {
+					caseStudyId: $activeCaseStudy._id
+				},
+				headers: {
+					'Content-Type': 'multipart/form-data'
+				}
+			}
+		);
+
+		await refreshData();
+
+		importDataModal.close();
+
+		showAlert(
+			response.status ? 'Success' : 'Oops',
+			response.msg,
+			response.status === 'Success' ? 'success' : 'error'
+		);
 	};
 </script>
 
@@ -78,7 +99,6 @@
 		<div class="modal-box">
 			<form
 				method="post"
-				enctype="multipart/form-data"
 				class="form flex flex-col gap-3 mt-3"
 				on:submit|preventDefault={importData}
 			>
@@ -93,7 +113,7 @@
 					<label for="file">
 						<span class="label-text">File</span>
 					</label>
-					<input id="file" type="file" class="file-input" required bind:value={file} />
+					<input id="file" type="file" class="file-input" required bind:files={file} />
 				</div>
 			</form>
 		</div>

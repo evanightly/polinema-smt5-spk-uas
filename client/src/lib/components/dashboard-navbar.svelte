@@ -99,15 +99,17 @@
 				</select>
 			</div>
 
-			<button class="btn btn-circle btn-ghost btn-sm" on:click={toggleEditCaseStudyModal}
-				><Pencil class="w-4 h-4" /></button
-			>
-			<button class="btn btn-circle btn-ghost btn-sm" on:click={toggleAddCaseStudyModal}
-				><Plus class="w-4 h-4" /></button
-			>
-			<button class="btn btn-circle btn-ghost btn-sm" on:click={removeCaseStudy}
-				><Minus class="w-4 h-4" /></button
-			>
+			{#if $activeCaseStudy}
+				<button class="btn btn-circle btn-ghost btn-sm" on:click={toggleEditCaseStudyModal}>
+					<Pencil class="w-4 h-4" />
+				</button>
+			{/if}
+			<button class="btn btn-circle btn-ghost btn-sm" on:click={toggleAddCaseStudyModal}>
+				<Plus class="w-4 h-4" />
+			</button>
+			<button class="btn btn-circle btn-ghost btn-sm" on:click={removeCaseStudy}>
+				<Minus class="w-4 h-4" />
+			</button>
 		</div>
 		<label class="swap swap-rotate">
 			<input type="checkbox" bind:checked={$darkMode} />

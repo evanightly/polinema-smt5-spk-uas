@@ -13,6 +13,10 @@
 	let alternativeTitle: string;
 	let editAlternativeId: string;
 	let editAlternativeTitle: string;
+	let disableDeleteData: boolean;
+	$: if ($activeCaseStudy) {
+		disableDeleteData = $activeCaseStudy.criteria.length > 0;
+	}
 
 	onMount(() => {
 		redirectIfNoCaseSelected();
@@ -27,6 +31,8 @@
 		});
 
 		await refreshData();
+
+		alternativeTitle = '';
 	};
 
 	const showEditModal = (alternative: IAlternative) => {
@@ -111,9 +117,11 @@
 								<button class="btn btn-sm btn-blue" on:click={() => showEditModal(alternative)}>
 									<Pencil class="w-4 h-4" />
 								</button>
-								<button disabled={$activeCaseStudy.criteria.length > 0} class="btn btn-sm btn-red" on:click={() => showDeleteModal(alternative)}>
-									<Trash class="w-4 h-4" />
-								</button>
+								{#if !disableDeleteData}
+									<button class="btn btn-sm btn-red" on:click={() => showDeleteModal(alternative)}>
+										<Trash class="w-4 h-4" />
+									</button>
+								{/if}
 							</td>
 						</tr>
 					{/each}
