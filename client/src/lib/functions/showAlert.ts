@@ -8,7 +8,7 @@ import Swal, { type SweetAlertOptions } from "sweetalert2";
  */
 export default function showAlert(title: string, text: string = '', icon: SweetAlertOptions['icon'], timer: number = 3000) {
 
-    Swal.fire({
+    return Swal.fire({
         title,
         text,
         icon,

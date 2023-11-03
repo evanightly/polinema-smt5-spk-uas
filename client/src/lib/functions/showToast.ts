@@ -8,7 +8,7 @@ import Swal, { type SweetAlertPosition } from "sweetalert2";
  */
 export default function showToast(title: string, text: string = '', color: string = 'black', timer: number = 3000, position: SweetAlertPosition = 'bottom-right') {
 
-    Swal.fire({
+    return Swal.fire({
         title,
         text,
         toast: true,

@@ -17,7 +17,7 @@ AlternativeSchema.post<Query<IAlternative, IAlternative>>('save', async function
 
 AlternativeSchema.post<Query<IAlternative, IAlternative>>('findOneAndDelete', async function (doc) {
 	const scores = doc.score
-	console.log(typeof scores, scores)
+	// console.log(typeof scores, scores)
 
 	const caseStudyId = doc.studyCase
 	const alternativeId = doc._id

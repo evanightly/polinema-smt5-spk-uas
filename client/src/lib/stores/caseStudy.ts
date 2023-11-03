@@ -32,5 +32,5 @@ export const getCaseStudy = async (_id: string) => {
 
 export const refreshData = async () => {
 	const response = await fetch(`${api}/case-study/${currentCaseStudy._id}`).then(res => res.json()).catch(err => console.log(err))
-	activeCaseStudy.set(response)
+	activeCaseStudy.set(response);
 }

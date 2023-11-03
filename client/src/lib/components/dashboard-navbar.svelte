@@ -50,7 +50,7 @@
 
 	const removeCaseStudy = async () => {
 		await axios.delete(`${$baseUrl}/case-study/${$selectedCaseStudy._id}`);
-		await getCaseStudyList();
+		location.reload()
 	};
 
 	onMount(() => {

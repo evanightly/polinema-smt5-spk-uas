@@ -1,5 +1,5 @@
 import { Row, Workbook } from "exceljs"
-import { FastifyInstance, FastifyReply } from "fastify"
+import { FastifyInstance, FastifyReply, FastifyRequest } from "fastify"
 import IAlternative from "../../../lib/interfaces/IAlternative"
 import ICriteria, { CriteriaType } from "../../../lib/interfaces/ICriteria"
 import IImportCriteria from "../../../lib/interfaces/IImportCriteria"
@@ -52,7 +52,7 @@ module.exports = function (fastify: FastifyInstance, opts: any, done: any) {
                     title: criterias[i],
                     studyCaseId: caseStudyId,
                     type: type as CriteriaType,
-                    weight: parseInt(weight[i])
+                    weight: +weight[i]
                 })
             }
 
@@ -103,8 +103,9 @@ module.exports = function (fastify: FastifyInstance, opts: any, done: any) {
 
         for (let i = 0; i < scores.length; i++) {
             const scoreSegment: IScore[] = []
-            for (const score of scores[i]) {
-                const finalScore = await Score.create({ score, alternative: createdAlternative[i], criteria: createdCriteria[i] })
+            for (let j = 0; j < scores[i].length; j++) {
+                const score = scores[i][j];
+                const finalScore = await Score.create({ score, alternative: createdAlternative[i], criteria: createdCriteria[j] })
                 scoreSegment.push(finalScore)
             }
             createdScore.push(scoreSegment)
@@ -116,16 +117,22 @@ module.exports = function (fastify: FastifyInstance, opts: any, done: any) {
 
         await CaseStudy.findByIdAndUpdate(caseStudyId, { alternative: createdAlternative, criteria: createdCriteria }, { new: true })
 
-        console.log(alternatives,
-            scores,
-            criterias,
-            createdScore,
-            createdAlternative,
-            createdCriteria)
+        // console.log(
+        //     alternatives,
+        //     scores,
+        //     criterias,
+        //     createdScore,
+        //     createdAlternative,
+        //     createdCriteria
+        // )
         return reply.send({
             msg: 'Data Imported',
             status: 'Success'
         })
+    })
+
+    fastify.get('/template', (req: FastifyRequest, res: any) => {
+        return res.sendFile('files/TemplateImportData.xlsx')
     })
 
     done()

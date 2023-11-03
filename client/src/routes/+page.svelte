@@ -2,6 +2,7 @@
 	import { browser } from '$app/environment';
 	import showAlert from '$lib/functions/showAlert';
 	import { baseUrl } from '$lib/stores/baseUrl';
+	import { DocumentArrowDown } from '@inqling/svelte-icons/heroicon-24-outline';
 	import axios from 'axios';
 	import Swal from 'sweetalert2';
 	import { activeCaseStudy, getCaseStudyList, refreshData } from '../lib/stores/caseStudy';
@@ -27,29 +28,30 @@
 	};
 
 	const importData = async () => {
-		console.log({ caseStudyId: $activeCaseStudy._id });
-		const { data: response } = await axios.post(
-			$baseUrl + '/file/import',
-			{ file },
-			{
-				params: {
-					caseStudyId: $activeCaseStudy._id
-				},
-				headers: {
-					'Content-Type': 'multipart/form-data'
+		if ($activeCaseStudy && $activeCaseStudy._id) {
+			const { data: response } = await axios.post(
+				$baseUrl + '/file/import',
+				{ file },
+				{
+					params: {
+						caseStudyId: $activeCaseStudy._id
+					},
+					headers: {
+						'Content-Type': 'multipart/form-data'
+					}
 				}
-			}
-		);
+			);
 
-		await refreshData();
+			await refreshData();
 
-		importDataModal.close();
+			importDataModal.close();
 
-		showAlert(
-			response.status ? 'Success' : 'Oops',
-			response.msg,
-			response.status === 'Success' ? 'success' : 'error'
-		);
+			showAlert(
+				response.status ? 'Success' : 'Oops',
+				response.msg,
+				response.status === 'Success' ? 'success' : 'error'
+			);
+		}
 	};
 </script>
 
@@ -103,17 +105,31 @@
 				on:submit|preventDefault={importData}
 			>
 				<div class="flex justify-between">
-					<div class="flex flex-col gap-2">
-						<h3 class="font-bold text-lg">Import Data</h3>
-						<p>Studi kasus: {$activeCaseStudy.title}</p>
-					</div>
+					<h3 class="font-bold text-lg">Import Data</h3>
 					<button type="submit" class="btn btn-sm btn-primary">Import</button>
 				</div>
-				<div class="form-control">
-					<label for="file">
-						<span class="label-text">File</span>
-					</label>
-					<input id="file" type="file" class="file-input" required bind:files={file} />
+				<div class="flex flex-col gap-5">
+					<div class="form-control gap-2">
+						<p>Studi kasus: {$activeCaseStudy.title}</p>
+						<a
+							href={$baseUrl + '/file/template'}
+							download="TemplateImportData.xlsx"
+							class="btn btn-block btn-green"
+						>
+							<p>Template Excel</p>
+							<DocumentArrowDown class="h-5 w-5" />
+						</a>
+					</div>
+					<div class="form-control gap-2">
+						<label for="file"> Unggah file excel </label>
+						<input
+							id="file"
+							type="file"
+							class="file-input file-input-bordered"
+							required
+							bind:files={file}
+						/>
+					</div>
 				</div>
 			</form>
 		</div>

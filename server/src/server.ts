@@ -1,5 +1,6 @@
 import dotenv from 'dotenv'
 import mongoose from "mongoose"
+import path from 'path'
 import createSampleData from './functions/createSampleData'
 dotenv.config()
 
@@ -8,6 +9,10 @@ const server = fastify()
 
 server.register(require('@fastify/cors'))
 server.register(require('@fastify/multipart'))
+server.register(require('@fastify/static'), {
+	root: path.join(__dirname, 'public'),
+	prefix: '/public/',
+})
 
 server.get('/', async (_request, _reply) => {
 	return 'Ok'
