@@ -1,24 +1,15 @@
 <script lang="ts">
+	import pivot from '$lib/functions/pivot';
 	import type IFinalResult from '$lib/interface/IFinalResult';
 	import { activeCaseStudy } from '$lib/stores/caseStudy';
+
 	let finalResult: IFinalResult[];
 	let finalResultScoreName: string;
 	let showDetails: boolean = false;
 
-	function pivot(data: any) {
-		var iter = function (pivoted: any, record: any) {
-			for (var key in record) {
-				if (!pivoted[key]) pivoted[key] = [];
-				pivoted[key].push(record[key]);
-			}
-			return pivoted;
-		};
-		return data.reduce(iter, []);
-	}
-
 	const criteriaArray = $activeCaseStudy.criteria;
 	const alternativeArray = $activeCaseStudy.alternative;
-	const setDivider = () => {
+	const calculateDivider = () => {
 		let divider = [];
 
 		for (let i = 0; i < criteriaArray.length; i++) {
@@ -37,13 +28,13 @@
 		));
 	};
 
-	const normalize = (divider: number[]) => {
+	const calculateNormalized = (calculatedDivider: number[]) => {
 		let normalize = [];
 		for (let i = 0; i < criteriaArray.length; i++) {
 			const segment = [];
 
 			for (const alt of alternativeArray) {
-				segment.push(alt.score[i].score / divider[i]);
+				segment.push(alt.score[i].score / calculatedDivider[i]);
 			}
 
 			normalize.push(segment);
@@ -53,11 +44,11 @@
 		return normalize;
 	};
 
-	const weighting = (normalized: number[][]) => {
+	const calculateWeightedNormalization = (calculatedNormalized: number[][]) => {
 		let weighted: number[][] = [];
 		criteriaArray.forEach((c, i) => {
 			const segment: number[] = [];
-			normalized[i].forEach((n) => {
+			calculatedNormalized[i].forEach((n) => {
 				segment.push(n * c.weight);
 			});
 			weighted.push(segment);
@@ -67,9 +58,9 @@
 		return weighted;
 	};
 
-	const definingIdealSolution = (weighted: number[][]) => {
+	const calculateIdealSolution = (calculatedWeightedNormalization: number[][]) => {
 		// 3.A Defining Maximum Ideal Solution
-		const max = weighted.map((segment, i) => {
+		const max = calculatedWeightedNormalization.map((segment, i) => {
 			if (criteriaArray[i].type === 'Benefit') {
 				return Math.max(...segment);
 			} else {
@@ -78,7 +69,7 @@
 		});
 
 		// 3.B Defining Minimum Ideal Solution
-		const min = weighted.map((segment, i) => {
+		const min = calculatedWeightedNormalization.map((segment, i) => {
 			if (criteriaArray[i].type === 'Benefit') {
 				return Math.min(...segment);
 			} else {
@@ -89,16 +80,17 @@
 		return { max, min };
 	};
 
-	const distancing = (
-		pivotedWeight: number[][],
-		idealSolution: { max: number[]; min: number[] }
+	const calculateDistance = (
+		calculatedWeightedNormalization: number[][],
+		calculatedIdealSolution: { max: number[]; min: number[] }
 	) => {
+		const pivotedWeight: number[][] = pivot(calculatedWeightedNormalization);
 		// 4.A Calculating Max Distance
 		const distanceMax = pivotedWeight.map((segment, index) => {
 			return Math.sqrt(
 				segment
 					.map((weight, i) => {
-						return Math.pow(idealSolution.max[i] - weight, 2);
+						return Math.pow(calculatedIdealSolution.max[i] - weight, 2);
 					})
 					.reduce((prev, current) => prev + current)
 			);
@@ -109,7 +101,7 @@
 			return Math.sqrt(
 				segment
 					.map((weight, i) => {
-						return Math.pow(idealSolution.min[i] - weight, 2);
+						return Math.pow(calculatedIdealSolution.min[i] - weight, 2);
 					})
 					.reduce((prev, current) => prev + current)
 			);
@@ -118,19 +110,19 @@
 		return { distanceMax, distanceMin };
 	};
 
-	const calculatePreference = (distance: { distanceMax: number[]; distanceMin: number[] }) => {
+	const calculatePreference = (calculatedDistance: { distanceMax: number[]; distanceMin: number[] }) => {
 		// 5.A Calculate Preference
 		return alternativeArray.map((alt, i) => {
 			return {
 				...alt,
-				preference: distance.distanceMin[i] / (distance.distanceMin[i] + distance.distanceMax[i])
+				preference: calculatedDistance.distanceMin[i] / (calculatedDistance.distanceMin[i] + calculatedDistance.distanceMax[i])
 			};
 		});
 	};
 
-	const calculateRank = (preference: any[]) => {
+	const calculateRank = (calculatedPreference: any[]) => {
 		// 5.B Ranking
-		return preference.sort((a, b) => {
+		return calculatedPreference.sort((a, b) => {
 			if (a.preference < b.preference) {
 				return 1;
 			} else if (a.preference > b.preference) {
@@ -140,10 +132,10 @@
 		});
 	};
 
-	const applyingFinalResult = (ranks: any[]) => {
+	const applyingFinalResult = (calculatedRank: any[]) => {
 		// Mapping
 		const scoreName = 'Preference';
-		finalResult = ranks.map((result, rank) => ({
+		finalResult = calculatedRank.map((result, rank) => ({
 			altName: result.title,
 			score: result.preference,
 			rank: rank + 1
@@ -152,17 +144,18 @@
 		finalResultScoreName = scoreName;
 	};
 
-	const dividers = setDivider();
-	const normalized = normalize(dividers);
-	const weighted = weighting(normalized);
-	const idealSolutions = definingIdealSolution(weighted);
-	const pivotedWeights = pivot(weighted);
-	const distances = distancing(pivotedWeights, idealSolutions);
-	const preferences = calculatePreference(distances);
-	const ranks = calculateRank(preferences);
-	const pivotedNormalized = pivot(normalized);
+	const calculatedDivider = calculateDivider();
+	const calculatedNormalized = calculateNormalized(calculatedDivider);
+	const calculatedWeightedNormalization = calculateWeightedNormalization(calculatedNormalized);
+	const calculatedIdealSolution = calculateIdealSolution(calculatedWeightedNormalization);
+	const calculatedDistance = calculateDistance(
+		calculatedWeightedNormalization,
+		calculatedIdealSolution
+	);
+	const calculatedPreference = calculatePreference(calculatedDistance);
+	const calculatedRank = calculateRank(calculatedPreference);
 
-	applyingFinalResult(ranks);
+	applyingFinalResult(calculatedRank);
 </script>
 
 <svelte:head>
@@ -206,7 +199,7 @@
 					</thead>
 					<tbody>
 						<tr>
-							{#each dividers as div}
+							{#each calculatedDivider as div}
 								<td>{div}</td>
 							{/each}
 						</tr>
@@ -227,7 +220,7 @@
 						{#each alternativeArray as alternative, i}
 							<tr>
 								<td>{alternative.title}</td>
-								{#each pivotedNormalized[i] as normal}
+								{#each pivot(calculatedNormalized)[i] as normal}
 									<td>{normal}</td>
 								{/each}
 							</tr>
@@ -249,7 +242,7 @@
 						{#each alternativeArray as alternative, i}
 							<tr>
 								<td>{alternative.title}</td>
-								{#each pivotedWeights[i] as weight}
+								{#each pivot(calculatedWeightedNormalization)[i] as weight}
 									<td>{weight}</td>
 								{/each}
 							</tr>
@@ -270,13 +263,13 @@
 					<tbody>
 						<tr>
 							<td>Y+</td>
-							{#each idealSolutions.max as max}
+							{#each calculatedIdealSolution.max as max}
 								<td>{max}</td>
 							{/each}
 						</tr>
 						<tr>
 							<td>Y-</td>
-							{#each idealSolutions.min as min}
+							{#each calculatedIdealSolution.min as min}
 								<td>{min}</td>
 							{/each}
 						</tr>
@@ -292,7 +285,7 @@
 							</tr>
 						</thead>
 						<tbody>
-							{#each distances.distanceMax as max}
+							{#each calculatedDistance.distanceMax as max}
 								<tr>
 									<td>{max}</td>
 								</tr>
@@ -307,7 +300,7 @@
 							</tr>
 						</thead>
 						<tbody>
-							{#each distances.distanceMin as min}
+							{#each calculatedDistance.distanceMin as min}
 								<tr>
 									<td>{min}</td>
 								</tr>
@@ -326,7 +319,7 @@
 						</tr>
 					</thead>
 					<tbody>
-						{#each preferences as preference, i}
+						{#each calculatedPreference as preference, i}
 							<tr>
 								<td>{preference.title}</td>
 								<td>{preference.preference}</td>

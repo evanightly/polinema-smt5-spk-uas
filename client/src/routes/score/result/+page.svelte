@@ -2,11 +2,12 @@
 	import redirectIfNoCaseSelected from '$lib/functions/redirectIfNoCaseSelected';
 	import Psi from '$lib/methods/psi.svelte';
 	import Topsis from '$lib/methods/topsis.svelte';
+	import Vikor from '$lib/methods/vikor.svelte';
 	import { activeCaseStudy } from '$lib/stores/caseStudy';
 	import { onMount } from 'svelte';
 	let calculationType: string;
 
-	const methods = ['Topsis', 'PSI'];
+	const methods = ['Topsis', 'PSI', 'Vikor'];
 	$: console.log(calculationType);
 	onMount(() => {
 		redirectIfNoCaseSelected();
@@ -76,5 +77,7 @@
 		<Topsis />
 	{:else if calculationType === 'PSI'}
 		<Psi />
+	{:else if calculationType === 'Vikor'}
+		<Vikor />
 	{/if}
 {/if}
