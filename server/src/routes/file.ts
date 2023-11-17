@@ -61,16 +61,16 @@ module.exports = function (fastify: FastifyInstance, opts: any, done: any) {
 
         const getAlternativeAndScoreData = () => {
             const alternatives: string[] = []
-            const scores: number[][] = []
+            const scores: string[][] = []
 
             worksheet!.eachRow({ includeEmpty: false }, (row: Row, rowNumber: number) => {
                 if (rowNumber >= 7) {
-                    const scoreSegment: number[] = []
+                    const scoreSegment: string[] = []
                     row.eachCell((cell, colNumber) => {
                         if (colNumber === 1) {
                             alternatives.push(cell.text)
                         } else {
-                            scoreSegment.push(parseInt(cell.text))
+                            scoreSegment.push(cell.text)
                         }
                     })
                     scores.push(scoreSegment)
@@ -105,6 +105,7 @@ module.exports = function (fastify: FastifyInstance, opts: any, done: any) {
             const scoreSegment: IScore[] = []
             for (let j = 0; j < scores[i].length; j++) {
                 const score = scores[i][j];
+                console.log(score)
                 const finalScore = await Score.create({ score, alternative: createdAlternative[i], criteria: createdCriteria[j] })
                 scoreSegment.push(finalScore)
             }
