@@ -105,7 +105,6 @@ module.exports = function (fastify: FastifyInstance, opts: any, done: any) {
             const scoreSegment: IScore[] = []
             for (let j = 0; j < scores[i].length; j++) {
                 const score = scores[i][j];
-                console.log(score)
                 const finalScore = await Score.create({ score, alternative: createdAlternative[i], criteria: createdCriteria[j] })
                 scoreSegment.push(finalScore)
             }
