@@ -1,22 +1,17 @@
 <script lang="ts">
 	import { browser } from '$app/environment';
 	import showAlert from '$lib/functions/showAlert';
-	import { baseUrl } from '$lib/stores/baseUrl';
+	import { baseUrlStore } from '$lib/stores/baseUrlStore';
+	import { loadingOverlay } from '$lib/stores/loadingOverlayStore';
 	import { DocumentArrowDown } from '@inqling/svelte-icons/heroicon-24-outline';
 	import axios from 'axios';
-	import Swal from 'sweetalert2';
-	import { activeCaseStudy, getCaseStudyList, refreshData } from '../lib/stores/caseStudy';
+	import { activeCaseStudy, getCaseStudyList, refreshData } from '../lib/stores/caseStudyStore';
 	let importDataModal: HTMLDialogElement;
 	let file: FileList;
 
 	const useSampleData = async () => {
-		Swal.fire({
-			title: 'Please Wait',
-			allowOutsideClick: false,
-			showConfirmButton: false,
-			html: '<span class="loading loading-spinner loading-lg"></span>'
-		});
-		await axios.get($baseUrl + '/sample');
+		loadingOverlay.set(true, 'Loading sample data');
+		await axios.get($baseUrlStore + '/sample');
 		await getCaseStudyList();
 		if (browser) {
 			location.reload();
@@ -29,8 +24,11 @@
 
 	const importData = async () => {
 		if ($activeCaseStudy && $activeCaseStudy._id) {
+			importDataModal.close();
+			loadingOverlay.set(true, 'Importing data');
+
 			const { data: response } = await axios.post(
-				$baseUrl + '/file/import',
+				$baseUrlStore + '/file/import',
 				{ file },
 				{
 					params: {
@@ -42,9 +40,9 @@
 				}
 			);
 
-			await refreshData();
+			loadingOverlay.dismiss();
 
-			importDataModal.close();
+			await refreshData();
 
 			showAlert(
 				response.status ? 'Success' : 'Oops',
@@ -112,7 +110,7 @@
 					<div class="form-control gap-2">
 						<p>Studi kasus: {$activeCaseStudy.title}</p>
 						<a
-							href={$baseUrl + '/file/template'}
+							href={$baseUrlStore + '/file/template'}
 							download="TemplateImportData.xlsx"
 							class="btn btn-block btn-green"
 						>

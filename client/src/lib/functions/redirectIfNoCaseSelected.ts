@@ -1,5 +1,5 @@
 import { browser } from '$app/environment';
-import { selectedCaseStudy } from "$lib/stores/caseStudy";
+import { selectedCaseStudy } from "$lib/stores/caseStudyStore";
 import Swal from 'sweetalert2';
 
 export default function redirectIfNoCaseSelected() {

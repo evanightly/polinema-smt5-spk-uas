@@ -2,8 +2,8 @@
 	import redirectIfNoCaseSelected from '$lib/functions/redirectIfNoCaseSelected';
 	import showConfirmationDialog from '$lib/functions/showConfirmationDialog';
 	import showToast from '$lib/functions/showToast';
-	import { baseUrl } from '$lib/stores/baseUrl';
-	import { activeCaseStudy, refreshData } from '$lib/stores/caseStudy';
+	import { baseUrlStore } from '$lib/stores/baseUrlStore';
+	import { activeCaseStudy, refreshData } from '$lib/stores/caseStudyStore';
 	import { Pencil, Trash } from '@inqling/svelte-icons/heroicon-24-outline';
 	import axios from 'axios';
 	import { onMount } from 'svelte';
@@ -30,7 +30,7 @@
 
 	const showModal = () => addModal.showModal();
 	const addCriteria = async () => {
-		await axios.post(`${$baseUrl}/criteria`, {
+		await axios.post(`${$baseUrlStore}/criteria`, {
 			caseStudy_id: $activeCaseStudy._id,
 			title: criteriaTitle,
 			weight: criteriaWeight,
@@ -52,7 +52,7 @@
 	};
 
 	const updateCriteria = async () => {
-		await axios.put(`${$baseUrl}/criteria/${editCriteriaId}`, {
+		await axios.put(`${$baseUrlStore}/criteria/${editCriteriaId}`, {
 			title: editCriteriaTitle,
 			weight: editCriteriaWeight,
 			type: editCriteriaType
@@ -71,7 +71,7 @@
 			`Apakah anda yakin menghapus kriteria ${criteria.title}?`
 		);
 		if (isConfirmed) {
-			await axios.delete($baseUrl + '/criteria/' + deleteCriteriaId);
+			await axios.delete($baseUrlStore + '/criteria/' + deleteCriteriaId);
 			await refreshData();
 			showToast(`Criteria ${criteria.title} berhasil dihapus`);
 		}

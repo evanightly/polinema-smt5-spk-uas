@@ -1,15 +1,17 @@
 <script>
 	import DashboardNavbar from '$lib/components/dashboard-navbar.svelte';
 	import DashboardSidebar from '$lib/components/dashboard-sidebar.svelte';
+	import LoadingOverlay from '$lib/components/loading-overlay.svelte';
 	import { onMount } from 'svelte';
 	import '../app.css';
-	import { getCaseStudyList } from '../lib/stores/caseStudy';
+	import { getCaseStudyList } from '../lib/stores/caseStudyStore';
 	onMount(async () => {
 		await getCaseStudyList();
 	});
 </script>
 
 <body>
+	<LoadingOverlay />
 	<div class="drawer lg:drawer-open">
 		<input id="dashboard-sidebar" type="checkbox" class="drawer-toggle" />
 		<div class="drawer-content flex flex-col">

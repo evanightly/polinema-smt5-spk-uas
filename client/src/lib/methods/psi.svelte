@@ -1,7 +1,7 @@
 <script lang="ts">
 	import pivot from '$lib/functions/pivot';
 	import type IFinalResult from '$lib/interface/IFinalResult';
-	import { activeCaseStudy } from '$lib/stores/caseStudy';
+	import { activeCaseStudy } from '$lib/stores/caseStudyStore';
 	import type IScore from '../../../../lib/interfaces/IScore';
 
 	let finalResult: IFinalResult[];

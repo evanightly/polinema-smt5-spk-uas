@@ -1,12 +1,12 @@
 import { writable, type Writable } from 'svelte/store';
 import type ICaseStudy from '../../../../lib/interfaces/ICaseStudy';
-import { baseUrl } from './baseUrl';
-export const caseStudyList: Writable<ICaseStudy[]> = writable();
+import { baseUrlStore } from './baseUrlStore';
+export const caseStudyStore: Writable<ICaseStudy[]> = writable();
 export const selectedCaseStudy: Writable<ICaseStudy> = writable();
 export const activeCaseStudy: Writable<ICaseStudy> = writable();
 
 let api: string
-baseUrl.subscribe((v) => api = v)
+baseUrlStore.subscribe((v) => api = v)
 
 let currentCaseStudy: ICaseStudy
 selectedCaseStudy.subscribe(async (caseStudy) => {
@@ -21,7 +21,7 @@ selectedCaseStudy.subscribe(async (caseStudy) => {
 
 export const getCaseStudyList = async () => {
 	const response = await fetch(`${api}/case-study/`).then(res => res.json()).catch(err => console.log(err))
-	caseStudyList.set(response)
+	caseStudyStore.set(response)
 	return response
 };
 

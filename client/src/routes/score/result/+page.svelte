@@ -3,7 +3,7 @@
 	import Psi from '$lib/methods/psi.svelte';
 	import Topsis from '$lib/methods/topsis.svelte';
 	import Vikor from '$lib/methods/vikor.svelte';
-	import { activeCaseStudy } from '$lib/stores/caseStudy';
+	import { activeCaseStudy } from '$lib/stores/caseStudyStore';
 	import { onMount } from 'svelte';
 	let calculationType: string;
 

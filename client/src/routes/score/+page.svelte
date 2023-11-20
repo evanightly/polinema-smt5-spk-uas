@@ -1,8 +1,8 @@
 <script lang="ts">
 	import redirectIfNoCaseSelected from '$lib/functions/redirectIfNoCaseSelected';
 	import showToast from '$lib/functions/showToast';
-	import { baseUrl } from '$lib/stores/baseUrl';
-	import { activeCaseStudy, refreshData } from '$lib/stores/caseStudy';
+	import { baseUrlStore } from '$lib/stores/baseUrlStore';
+	import { activeCaseStudy, refreshData } from '$lib/stores/caseStudyStore';
 	import axios from 'axios';
 	import { onMount } from 'svelte';
 
@@ -14,7 +14,7 @@
 		const _id = e.target.getAttribute('data-id');
 		const { value } = e.target;
 
-		await axios.patch(`${$baseUrl}/alternative/${_id}`, {
+		await axios.patch(`${$baseUrlStore}/alternative/${_id}`, {
 			title: value
 		});
 
@@ -27,7 +27,7 @@
 		const _id = e.target.getAttribute('data-id');
 		const { value } = e.target;
 
-		await axios.patch(`${$baseUrl}/score/${_id}`, {
+		await axios.patch(`${$baseUrlStore}/score/${_id}`, {
 			score: value
 		});
 
@@ -44,7 +44,7 @@
 		const criteria = $activeCaseStudy.criteria[cell];
 		const alternative = $activeCaseStudy.alternative[row];
 
-		await axios.post($baseUrl + '/score', {
+		await axios.post($baseUrlStore + '/score', {
 			score,
 			alternativeId: alternative._id,
 			criteriaId: criteria._id

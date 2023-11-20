@@ -1,24 +1,21 @@
 <script lang="ts">
+	import showToast from '$lib/functions/showToast';
+	import { baseUrlStore } from '$lib/stores/baseUrlStore';
 	import {
 		activeCaseStudy,
-		caseStudyList,
+		caseStudyStore,
 		getCaseStudyList,
 		selectedCaseStudy
-	} from '$lib/stores/caseStudy';
-	import { darkMode } from '$lib/stores/darkMode';
-	import jQuery from 'jquery';
-
-	import showToast from '$lib/functions/showToast';
-	import { baseUrl } from '$lib/stores/baseUrl';
+	} from '$lib/stores/caseStudyStore';
+	import { darkModeStore } from '$lib/stores/darkModeStore';
 	import { Bars3, Minus, Moon, Pencil, Plus, Sun } from '@inqling/svelte-icons/heroicon-24-outline';
 	import axios from 'axios';
+	import jQuery from 'jquery';
 	import { afterUpdate, onMount } from 'svelte';
-
 	let addCaseStudyModal: HTMLDialogElement;
 	let editCaseStudyModal: HTMLDialogElement;
 	let caseStudyTitle: string;
 	let caseStudyDescription: string;
-
 	const toggleAddCaseStudyModal = () => {
 		addCaseStudyModal.showModal();
 	};
@@ -28,7 +25,7 @@
 	};
 
 	const addCaseStudy = async () => {
-		await axios.post(`${$baseUrl}/case-study`, {
+		await axios.post(`${$baseUrlStore}/case-study`, {
 			title: caseStudyTitle,
 			description: caseStudyDescription
 		});
@@ -42,15 +39,15 @@
 			title: $activeCaseStudy.title,
 			description: $activeCaseStudy.description
 		};
-		await axios.put(`${$baseUrl}/case-study/${$activeCaseStudy._id}`, data);
+		await axios.put(`${$baseUrlStore}/case-study/${$activeCaseStudy._id}`, data);
 		await getCaseStudyList();
 
 		showToast('Studi kasus berhasil diubah');
 	};
 
 	const removeCaseStudy = async () => {
-		await axios.delete(`${$baseUrl}/case-study/${$selectedCaseStudy._id}`);
-		location.reload()
+		await axios.delete(`${$baseUrlStore}/case-study/${$selectedCaseStudy._id}`);
+		location.reload();
 	};
 
 	onMount(() => {
@@ -58,20 +55,20 @@
 			localStorage.theme === 'dark' ||
 			(!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)
 		) {
-			darkMode.set(true);
+			darkModeStore.set(true);
 		} else {
-			darkMode.set(false);
+			darkModeStore.set(false);
 		}
 	});
 
 	afterUpdate(() => {
-		if ($darkMode) {
+		if ($darkModeStore) {
 			jQuery('html').attr('data-theme', 'dark');
 		} else {
 			jQuery('html').attr('data-theme', 'light');
 		}
 
-		localStorage.setItem('theme', $darkMode ? 'dark' : 'light');
+		localStorage.setItem('theme', $darkModeStore ? 'dark' : 'light');
 	});
 </script>
 
@@ -91,8 +88,8 @@
 					class="select select-bordered select-sm"
 					bind:value={$selectedCaseStudy}
 				>
-					{#if $caseStudyList}
-						{#each $caseStudyList as caseStudy}
+					{#if $caseStudyStore}
+						{#each $caseStudyStore as caseStudy}
 							<option value={caseStudy}>{caseStudy.title}</option>
 						{/each}
 					{/if}
@@ -112,7 +109,7 @@
 			</button>
 		</div>
 		<label class="swap swap-rotate">
-			<input type="checkbox" bind:checked={$darkMode} />
+			<input type="checkbox" bind:checked={$darkModeStore} />
 			<Sun class="w-5 h-5 swap-on" />
 			<Moon class="w-5 h-5 swap-off" />
 		</label>
