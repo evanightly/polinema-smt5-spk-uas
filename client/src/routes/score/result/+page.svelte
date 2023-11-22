@@ -1,5 +1,6 @@
 <script lang="ts">
 	import redirectIfNoCaseSelected from '$lib/functions/redirectIfNoCaseSelected';
+	import Moora from '$lib/methods/moora.svelte';
 	import Psi from '$lib/methods/psi.svelte';
 	import Topsis from '$lib/methods/topsis.svelte';
 	import Vikor from '$lib/methods/vikor.svelte';
@@ -7,7 +8,7 @@
 	import { onMount } from 'svelte';
 	let calculationType: string;
 
-	const methods = ['Topsis', 'PSI', 'Vikor'];
+	const methods = ['Topsis', 'PSI', 'Vikor', 'Moora'];
 	$: console.log(calculationType);
 	onMount(() => {
 		redirectIfNoCaseSelected();
@@ -79,5 +80,7 @@
 		<Psi />
 	{:else if calculationType === 'Vikor'}
 		<Vikor />
+	{:else if calculationType === 'Moora'}
+		<Moora />
 	{/if}
 {/if}

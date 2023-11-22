@@ -139,7 +139,7 @@
 </script>
 
 <svelte:head>
-	<title>DSS Result - Topsis</title>
+	<title>DSS Result - Vikor</title>
 </svelte:head>
 
 <div class="flex flex-col gap-5 mt-5">

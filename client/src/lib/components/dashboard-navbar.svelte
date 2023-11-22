@@ -63,12 +63,12 @@
 
 	afterUpdate(() => {
 		if ($darkModeStore) {
-			jQuery('html').attr('data-theme', 'dark');
+			jQuery('html').attr('data-theme', 'dim');
 		} else {
-			jQuery('html').attr('data-theme', 'light');
+			jQuery('html').attr('data-theme', 'nord');
 		}
 
-		localStorage.setItem('theme', $darkModeStore ? 'dark' : 'light');
+		localStorage.setItem('theme', $darkModeStore ? 'dim' : 'nord');
 	});
 </script>
 
