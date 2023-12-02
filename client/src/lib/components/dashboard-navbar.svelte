@@ -16,6 +16,7 @@
 	let editCaseStudyModal: HTMLDialogElement;
 	let caseStudyTitle: string;
 	let caseStudyDescription: string;
+
 	const toggleAddCaseStudyModal = () => {
 		addCaseStudyModal.showModal();
 	};
@@ -63,12 +64,12 @@
 
 	afterUpdate(() => {
 		if ($darkModeStore) {
-			jQuery('html').attr('data-theme', 'dim');
+			jQuery('html').attr('data-theme', 'sunset');
 		} else {
-			jQuery('html').attr('data-theme', 'nord');
+			jQuery('html').attr('data-theme', 'cmyk');
 		}
 
-		localStorage.setItem('theme', $darkModeStore ? 'dim' : 'nord');
+		localStorage.setItem('theme', $darkModeStore ? 'dark' : 'light');
 	});
 </script>
 
