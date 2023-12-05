@@ -1,42 +1,59 @@
 <script lang="ts">
-	import { baseUrl } from '$lib/stores/baseUrl';
-	import { activeCaseStudy, refreshData } from '$lib/stores/caseStudy';
+	import redirectIfNoCaseSelected from '$lib/functions/redirectIfNoCaseSelected';
+	import showToast from '$lib/functions/showToast';
+	import { baseUrlStore } from '$lib/stores/baseUrlStore';
+	import { activeCaseStudy, refreshData } from '$lib/stores/caseStudyStore';
 	import axios from 'axios';
-	import Swal from 'sweetalert2';
+	import { onMount } from 'svelte';
+
+	onMount(() => {
+		redirectIfNoCaseSelected();
+	});
+
 	const changeAlternative = async (e: any) => {
 		const _id = e.target.getAttribute('data-id');
 		const { value } = e.target;
 
-		await axios.patch(`${$baseUrl}/alternative/${_id}`, {
+		await axios.patch(`${$baseUrlStore}/alternative/${_id}`, {
 			title: value
 		});
 
 		await refreshData();
 
-		Swal.fire({
-			title: 'Nama alternatif berhasil diubah',
-			toast: true,
-			position: 'bottom-right',
-			timer: 3000
-		});
+		showToast('Nama alternatif berhasil diubah');
 	};
 
 	const changeScore = async (e: any) => {
 		const _id = e.target.getAttribute('data-id');
 		const { value } = e.target;
 
-		await axios.patch(`${$baseUrl}/score/${_id}`, {
+		await axios.patch(`${$baseUrlStore}/score/${_id}`, {
 			score: value
 		});
 
 		await refreshData();
 
-		Swal.fire({
-			title: 'Skor berhasil diubah',
-			toast: true,
-			position: 'bottom-right',
-			timer: 3000
+		showToast('Skor berhasil diubah');
+	};
+
+	const assignNewScore = async (e: any) => {
+		const row = e.target.parentElement.parentElement.rowIndex - 1;
+		const cell = e.target.parentElement.cellIndex - 1;
+		const score = e.target.value;
+
+		const criteria = $activeCaseStudy.criteria[cell];
+		const alternative = $activeCaseStudy.alternative[row];
+
+		await axios.post($baseUrlStore + '/score', {
+			score,
+			alternativeId: alternative._id,
+			criteriaId: criteria._id
 		});
+		await refreshData();
+
+		showToast(
+			`Berhasil ditambah\nSkor: ${score}\nKriteria: ${criteria.title}\nAlternatif: ${alternative.title}`
+		);
 	};
 </script>
 
@@ -56,34 +73,46 @@
 					<th>Alternatif</th>
 					{#if $activeCaseStudy && $activeCaseStudy.criteria.length}
 						{#each $activeCaseStudy.criteria as criteria}
-							<th contenteditable="true">{criteria.title}</th>
+							<th>{criteria.title}</th>
 						{/each}
 					{/if}
 				</tr>
 			</thead>
 			<tbody>
 				{#if $activeCaseStudy && $activeCaseStudy.alternative.length}
-					{#each $activeCaseStudy.alternative as alternative, i}
+					{#each $activeCaseStudy.alternative as alternative, alternativeIndex}
 						<tr>
-							<td class="p-0"
-								><input
+							<td class="p-0">
+								<input
 									type="text"
 									value={alternative.title}
 									data-id={alternative._id}
 									class="h-full w-full p-3"
+									step=".01"
 									on:change={changeAlternative}
-								/></td
-							>
-							{#each alternative.score as score}
-								<td class="p-0"
-									><input
-										type="number"
-										data-id={score._id}
-										value={score.score}
-										class="h-full w-full p-3"
-										on:change={changeScore}
-									/></td
-								>
+								/>
+							</td>
+							<!-- {console.log(alternative.score)} -->
+							{#each $activeCaseStudy.criteria as criteria, criteriaIndex}
+								<!-- {console.log(criteria._id)} -->
+								<!-- {console.log('Current Alternative Index: ', alternativeIndex)} -->
+								<!-- {console.log('Current Criteria Index: ', criteriaIndex)} -->
+								{#if alternative.score[criteriaIndex] && alternative.score[criteriaIndex].criteria && alternative.score[criteriaIndex].criteria._id === criteria._id}
+									<td class="p-0">
+										<input
+											type="number"
+											data-id={alternative.score[criteriaIndex]._id}
+											value={alternative.score[criteriaIndex].score}
+											class="h-full w-full p-3"
+											step=".01"
+											on:change={changeScore}
+										/>
+									</td>
+								{:else}
+									<td class="p-0">
+										<input type="number" class="h-full w-full p-3" on:change={assignNewScore} />
+									</td>
+								{/if}
 							{/each}
 						</tr>
 					{/each}

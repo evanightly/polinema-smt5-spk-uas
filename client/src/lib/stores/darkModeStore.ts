@@ -1,3 +1,3 @@
 import { writable, type Writable } from "svelte/store";
 
-export let darkMode: Writable<boolean> = writable();
+export let darkModeStore: Writable<boolean> = writable();
