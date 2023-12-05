@@ -184,7 +184,7 @@
 			</tbody>
 		</table>
 
-		<div class="collapse bg-base-200">
+		<div class="collapse bg-base-200 overflow-x-auto">
 			<input type="checkbox" name="my-accordion-1" bind:checked={showDetails} />
 			<div class="collapse-title text-xl font-medium text-center">Detail Perhitungan</div>
 			<div class="collapse-content">

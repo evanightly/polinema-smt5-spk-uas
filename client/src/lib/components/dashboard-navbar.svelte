@@ -64,9 +64,9 @@
 
 	afterUpdate(() => {
 		if ($darkModeStore) {
-			jQuery('html').attr('data-theme', 'sunset');
+			jQuery('html').attr('data-theme', 'dark');
 		} else {
-			jQuery('html').attr('data-theme', 'cmyk');
+			jQuery('html').attr('data-theme', 'light');
 		}
 
 		localStorage.setItem('theme', $darkModeStore ? 'dark' : 'light');

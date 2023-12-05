@@ -211,28 +211,6 @@
 					</tbody>
 				</table>
 
-				<p class="text-lg font-bold my-5 ml-4">Normalisasi</p>
-				<table class="table">
-					<thead>
-						<tr>
-							<th>Alternatif</th>
-							{#each criteriaArray as criteria}
-								<th>{criteria.title}</th>
-							{/each}
-						</tr>
-					</thead>
-					<tbody>
-						{#each alternativeArray as alternative, i}
-							<tr>
-								<td>{alternative.title}</td>
-								{#each calculatedNormalized[i] as normal}
-									<td>{normal}</td>
-								{/each}
-							</tr>
-						{/each}
-					</tbody>
-				</table>
-
 				<p class="text-lg font-bold my-5 ml-4">Optimasi</p>
 				<table class="table">
 					<thead>
@@ -247,7 +225,7 @@
 						{#each alternativeArray as alternative, i}
 							<tr>
 								<td>{alternative.title}</td>
-								{#each calculatedOptimization as optimized}
+								{#each pivot(calculatedOptimization) as optimized}
 									<td>{optimized[i]}</td>
 								{/each}
 							</tr>

@@ -78,14 +78,14 @@
 
 	<div class="mt-5 flex flex-col items-center gap-2 sm:flex-row sm:gap-3">
 		<button
-			class="btn btn-ghost bg-blue-500 text-white hover:bg-blue-600"
+			class="btn btn-primary"
 			on:click|preventDefault={useSampleData}
 		>
 			Sample Data
 		</button>
 		{#if $activeCaseStudy}
 			<button
-				class="btn btn-ghost bg-green-500 text-white hover:bg-green-600"
+				class="btn btn-green"
 				on:click={showImportDataModal}
 			>
 				Import Data

@@ -26,4 +26,8 @@
     .btn.btn-green {
         @apply bg-green-500 hover:bg-green-600 text-white
     }
+
+    html[data-theme="dark"] input {
+        @apply bg-base-100 active:border-0 outline-none
+    }
 }
