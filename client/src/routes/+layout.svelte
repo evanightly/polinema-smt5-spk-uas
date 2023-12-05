@@ -14,7 +14,7 @@
 	<LoadingOverlay />
 	<div class="drawer lg:drawer-open">
 		<input id="dashboard-sidebar" type="checkbox" class="drawer-toggle" />
-		<div class="drawer-content overflow-x-scroll">
+		<div class="drawer-content overflow-x-auto">
 			<DashboardNavbar />
 			<div class="pt-4 lg:pt-8 px-4 sm:px-8 md:px-8 lg:pl-10 min-h-full">
 				<slot />
