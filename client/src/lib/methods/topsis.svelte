@@ -134,7 +134,7 @@
 
 	const applyingFinalResult = (calculatedRank: any[]) => {
 		// Mapping
-		const scoreName = 'Preference';
+		const scoreName = 'Preference (V)';
 		finalResult = calculatedRank.map((result, rank) => ({
 			altName: result.title,
 			score: result.preference,
@@ -262,13 +262,13 @@
 					</thead>
 					<tbody>
 						<tr>
-							<td>Y+</td>
+							<td>A+</td>
 							{#each calculatedIdealSolution.max as max}
 								<td>{max}</td>
 							{/each}
 						</tr>
 						<tr>
-							<td>Y-</td>
+							<td>A-</td>
 							{#each calculatedIdealSolution.min as min}
 								<td>{min}</td>
 							{/each}
@@ -309,12 +309,12 @@
 					</table>
 				</div>
 
-				<p class="text-lg font-bold my-5 ml-4">Preferensi</p>
+				<p class="text-lg font-bold my-5 ml-4">Preference (V)</p>
 				<table class="table">
 					<thead>
 						<tr>
 							<th>Alternatif</th>
-							<th>Preferensi</th>
+							<th>Preference (V)</th>
 							<th>Rank</th>
 						</tr>
 					</thead>
