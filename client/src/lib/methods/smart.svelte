@@ -113,7 +113,7 @@
 						</tr>
 					</thead>
 					<tbody>
-						{#each calculatedUtility as utility, i}
+						{#each pivot(calculatedUtility) as utility, i}
 							<tr>
 								<td>{alternativeArray[i].title}</td>
 								{#each utility as u}
