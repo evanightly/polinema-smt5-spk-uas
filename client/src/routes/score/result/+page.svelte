@@ -4,13 +4,14 @@
 	import Psi from '$lib/methods/psi.svelte';
 	import Smart from '$lib/methods/smart.svelte';
 	import Topsis from '$lib/methods/topsis.svelte';
+	import Topsisv2 from '$lib/methods/topsisv2.svelte';
 	import Vikor from '$lib/methods/vikor.svelte';
 	import Waspas from '$lib/methods/waspas.svelte';
 	import { activeCaseStudy } from '$lib/stores/caseStudyStore';
 	import { onMount } from 'svelte';
 	let calculationType: string;
 
-	const methods = ['Topsis', 'PSI', 'Vikor', 'Moora', 'Waspas', 'Smart'];
+	const methods = ['Topsis', 'Topsis V2', 'PSI', 'Vikor', 'Moora', 'Waspas', 'Smart'];
 	$: console.log(calculationType);
 	onMount(() => {
 		redirectIfNoCaseSelected();
@@ -78,6 +79,8 @@
 {#if calculationType}
 	{#if calculationType === 'Topsis'}
 		<Topsis />
+	{:else if calculationType === 'Topsis V2'}
+		<Topsisv2 />
 	{:else if calculationType === 'PSI'}
 		<Psi />
 	{:else if calculationType === 'Vikor'}

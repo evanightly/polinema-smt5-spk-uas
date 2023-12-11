@@ -31,3 +31,15 @@
         @apply bg-base-100 active:border-0 outline-none
     }
 }
+
+::-webkit-scrollbar-track {
+	@apply hover:bg-base-300 transition-all;
+}
+
+::-webkit-scrollbar {
+	@apply w-[5px] border-x-8;
+}
+
+::-webkit-scrollbar-thumb {
+	@apply bg-base-content rounded active:bg-primary transition-all;
+}
