@@ -3,12 +3,32 @@
 	import showToast from '$lib/functions/showToast';
 	import { baseUrlStore } from '$lib/stores/baseUrlStore';
 	import { activeCaseStudy, refreshData } from '$lib/stores/caseStudyStore';
+	import { LockOpen, LockClosed } from '@inqling/svelte-icons/heroicon-24-outline';
 	import axios from 'axios';
 	import { onMount } from 'svelte';
+	import jQuery from 'jquery';
+
+	let isAlternativeFieldLocked = false;
 
 	onMount(() => {
 		redirectIfNoCaseSelected();
 	});
+
+	const toggleLockAlternativeField = () => {
+		isAlternativeFieldLocked = !isAlternativeFieldLocked;
+	};
+
+	$: {
+		try {
+			const altField = document.querySelectorAll('input[id^="alt-"]');
+
+			if (isAlternativeFieldLocked) {
+				altField.forEach((el) => el.setAttribute('disabled', 'true'));
+			} else {
+				altField.forEach((el) => el.removeAttribute('disabled'));
+			}
+		} catch (error) {}
+	}
 
 	const changeAlternative = async (e: any) => {
 		const _id = e.target.getAttribute('data-id');
@@ -70,7 +90,17 @@
 		<table class="table">
 			<thead>
 				<tr>
-					<th>Alternatif</th>
+					<th>
+						<div class="flex flex-col items-center">
+							{#if isAlternativeFieldLocked}
+								<button on:click={toggleLockAlternativeField}><LockOpen class="w-4 h-4" /></button>
+							{:else}
+								<button on:click={toggleLockAlternativeField}><LockClosed class="w-4 h-4" /></button
+								>
+							{/if}
+							Alternatif
+						</div>
+					</th>
 					{#if $activeCaseStudy && $activeCaseStudy.criteria.length}
 						{#each $activeCaseStudy.criteria as criteria}
 							<th>{criteria.title}</th>
@@ -84,6 +114,7 @@
 						<tr>
 							<td class="p-0">
 								<input
+									id="alt-{alternativeIndex}"
 									type="text"
 									value={alternative.title}
 									data-id={alternative._id}
