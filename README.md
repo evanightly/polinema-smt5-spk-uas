@@ -9,7 +9,7 @@ Proyek ini dikembangkan untuk melakukan perangkingan alternatif menggunakan meto
 - Perangkingan dengan metode TOPSIS.
 - Pengelolaan data dengan MongoDB.
 - Server API dengan Fastify.
-- Antarmuka pengguna dengan NextJS.
+- Antarmuka pengguna dengan Svelte.
 
 ## Anggota Kelompok
 
