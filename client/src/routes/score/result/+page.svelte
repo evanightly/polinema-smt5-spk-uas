@@ -7,11 +7,12 @@
 	import Topsisv2 from '$lib/methods/topsisv2.svelte';
 	import Vikor from '$lib/methods/vikor.svelte';
 	import Waspas from '$lib/methods/waspas.svelte';
+	import Ahp from '$lib/methods/ahp.svelte';
 	import { activeCaseStudy } from '$lib/stores/caseStudyStore';
 	import { onMount } from 'svelte';
 	let calculationType: string;
 
-	const methods = ['Topsis', 'Topsis V2', 'PSI', 'Vikor', 'Moora', 'Waspas', 'Smart'];
+	const methods = ['Topsis', 'Topsis V2', 'PSI', 'Vikor', 'Moora', 'Waspas', 'Smart', 'AHP'];
 	$: console.log(calculationType);
 	onMount(() => {
 		redirectIfNoCaseSelected();
@@ -91,5 +92,7 @@
 		<Waspas />
 	{:else if calculationType === 'Smart'}
 		<Smart />
+	{:else if calculationType === 'AHP'}
+		<Ahp />
 	{/if}
 {/if}
